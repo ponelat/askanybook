@@ -41,3 +41,5 @@ Get ruby on rails up and running...
 bundle 
 rails server
 ```
+
+A quick test of `http://localhost:3000/health` should return `{"ok": true}`
