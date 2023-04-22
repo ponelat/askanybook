@@ -29,9 +29,5 @@ pkgs.mkShell {
     pkgs.yarn
   ];
 
- shellHook = ''
-    alias r='rails'
- '';
-
 }
 
