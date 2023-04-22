@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+require 'dotenv/load'
+require_relative '../lib/shared/openai_magic'
+
+OPENAI_API_KEY = ENV['OPENAI_API_KEY']
+
+if OPENAI_API_KEY.nil?
+  raise 'Missing OpenAI Key, please update .env file.'
+end
+
+ai_magic = OpenAIMagic.new(OPENAI_API_KEY)
+question, _ = ARGV
+
+puts "Q: #{question}"
+answer = ai_magic.get_completion(question)
+
+print 'A: '
+# Silly, but fun...
+answer.chars.each do |c|
+  print c
+  sleep(0.05)
+end
