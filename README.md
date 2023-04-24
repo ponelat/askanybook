@@ -43,3 +43,34 @@ rails server
 ```
 
 A quick test of `http://localhost:3000/health` should return `{"ok": true}`
+
+## Stuff to do
+
+- [ ] Test embedding distance
+  -  `[0.1, 0.1, 0.1]` should be closer to `[0.2, 0.2, 0.2]` than `[0.9, 0.9, 0.9]`
+- [ ] Generate some embeddings, like the following...
+  ```csv
+  id,content,0, 1, ... MAX
+  apple,a juicy apple,...
+  banana,a rotten banana,...
+  ostrich,an old male ostrich,...
+  giraffe,a young female giraffe,...
+  newspapaer,the terrible newspaper,...
+  fruit,fruit,...
+  yellow,yellow,...
+  animal,animal,...
+
+  ```
+- [ ] Test semantic distance
+  - apple -> fruit is closer than newspaper -> fruit.
+  - given "yellow", sort the embeddings. First two should include "banana" and "giraffe".
+- [ ] Test pdf to embeddings (csv)
+  - Create PDF with following pages (based on embeddings fixture)
+  ```txt
+  page 1 -> a juicy apple
+  page 2 -> a rotten banana 
+  ...
+  page 8 -> animal
+  ```
+  - Given a (mock) "get_embedding", it should create `[id, content, ...embeddings]`. Don't think I'll test CSV creation though.
+- [ ] Test truncating pages to fit openai get_embedding. Tokens or character length.
