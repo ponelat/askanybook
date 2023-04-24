@@ -157,6 +157,7 @@ GEM
       httparty (>= 0.18.1)
     sqlite3 (1.6.2)
       mini_portile2 (~> 2.8.0)
+    stopwords (0.2)
     thor (1.2.1)
     timeout (0.3.2)
     tzinfo (2.0.6)
@@ -177,6 +178,7 @@ DEPENDENCIES
   rails (~> 7.0.4, >= 7.0.4.3)
   ruby-openai (~> 3.7)
   sqlite3 (~> 1.4)
+  stopwords (~> 0.2)
   tzinfo-data
 
 RUBY VERSION

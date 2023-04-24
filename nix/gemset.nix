@@ -585,6 +585,16 @@
     };
     version = "1.6.2";
   };
+  stopwords = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0z57sd7yi219cj699h969pp35k9vappmsfyy5hfmzvjyyl5ffa5d";
+      type = "gem";
+    };
+    version = "0.2";
+  };
   thor = {
     groups = ["default" "development"];
     platforms = [];

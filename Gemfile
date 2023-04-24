@@ -46,6 +46,6 @@ group :development do
   # gem "spring"
 end
 
-
 gem "ruby-openai", "~> 3.7"
 gem "dotenv-rails", "~> 2.8"
+gem "stopwords", "~> 0.2"
