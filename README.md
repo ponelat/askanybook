@@ -46,8 +46,8 @@ A quick test of `http://localhost:3000/health` should return `{"ok": true}`
 
 ## Stuff to do
 
-- [ ] Test embedding distance
-  -  `[0.1, 0.1, 0.1]` should be closer to `[0.2, 0.2, 0.2]` than `[0.9, 0.9, 0.9]`
+- [x] Test embedding distance
+  -  `[1,1]` should be closer to `[1,2]` than `[1,9]`
 - [ ] Generate some embeddings, like the following...
   ```csv
   id,content,0, 1, ... MAX
