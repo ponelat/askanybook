@@ -3,6 +3,7 @@ require 'dotenv/load'
 require "optparse"
 require "csv"
 require_relative '../lib/shared/openai_magic'
+require_relative '../lib/shared/embeddings'
 
 options = {}
 opts_parser = OptionParser.new do |opts|
@@ -28,8 +29,10 @@ end
 ai_magic = OpenAIMagic.new(options[:openai_key])
 name = File.basename(options[:file], ".*")
 output_name = options[:output] or "#{name}.embeddings.csv"
+
 puts "Getting embeddings for #{options[:file]}"
 
+# Load content
 contents = []
 CSV.foreach(options[:file], headers: true) do |row|
   id = row['id']
@@ -37,18 +40,19 @@ CSV.foreach(options[:file], headers: true) do |row|
   contents << [id, content]
 end
 
-CSV.open(output_name, "wb") do |csv|
-  csv << ['id', 'content'] + (0...OpenAIMagic::EMBEDDINGS_DIMENSIONS).to_a
-  counter = 0
-
-  contents.each do |row|
-    id,content = row
-    embedding = ai_magic.get_embedding(content)
-    puts "Embedded #{counter}:  #{id} - #{OpenAIMagic.sanitize_text(content)}\n"
-    counter += 1
-    csv << [id, content] + embedding
-  end
-
+# Get embeddings for each
+counter = 0
+list_of_embeddings = []
+contents.each do |row|
+  id,content = row
+  embedding = ai_magic.get_embedding(content)
+  puts "Embedded #{counter}:  #{id} - #{OpenAIMagic.sanitize_text(content)}\n"
+  counter += 1
+  list_of_embeddings << { id: id, content: content, embedding: embedding }
 end
+
+# So  that we serialize it the right way
+embeddings = Embeddings.new(list_of_embeddings)
+File.write(output_name, embeddings.to_csv_s)
 
 puts "Done, embeddings are in #{output_name}"
