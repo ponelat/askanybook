@@ -1,5 +1,5 @@
 require 'openai'
-require 'stopwords'
+# require 'stopwords'
 
 # Docs for embeddings: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
@@ -43,8 +43,8 @@ class OpenAIMagic
     text = text.downcase
     # Remove punctuation and special characters
     text = text.gsub(/[^\w\s]/, '')
-    # Remove stop words (the, an, etc)
-    text = text.split(' ').reject { |word|  Stopwords.is?(word) }.join(' ')
+    # Collapses words
+    text = text.split(' ').join(' ')
     return text
   end
 
