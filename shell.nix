@@ -25,6 +25,7 @@ pkgs.mkShell {
   buildInputs = [
     rubyEnv
     rubyEnv.wrappedRuby
+    pkgs.entr
     pkgs.nodejs
     pkgs.yarn
   ];
