@@ -45,10 +45,12 @@ counter = 0
 list_of_embeddings = []
 contents.each do |row|
   id,content = row
-  embedding = ai_magic.get_embedding(content)
-  puts "Embedded #{counter}:  #{id} - #{OpenAIMagic.sanitize_text(content)}\n"
+  response = ai_magic.get_embedding(content)
+  embedding = response[:embedding]
+  tokens = response[:tokens]
+  puts "Embedded #{counter}: tokens(#{tokens}) #{id} - #{OpenAIMagic.sanitize_text(content)}\n"
   counter += 1
-  list_of_embeddings << { id: id, content: content, embedding: embedding }
+  list_of_embeddings << { id: id, content: content, embedding: embedding, tokens: tokens }
 end
 
 # So  that we serialize it the right way

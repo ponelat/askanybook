@@ -1,14 +1,16 @@
 require_relative "./embedding"
 
 class Embeddings
+
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)
     embeddings = rows.map do |row|
       id = row['id']
       content = row['content']
+      tokens = Integer(row['tokens'])
       embedding_raw = row['embedding']
       embedding = embedding_raw.split(';').map { |n| Float(n) }
-      {id: id, content: content, embedding: embedding }
+      {id: id, content: content, tokens: tokens, embedding: embedding}
     end
     Embeddings.new(embeddings)
   end
@@ -50,9 +52,9 @@ class Embeddings
 
   def to_csv_s()
     CSV.generate do |csv|
-      csv << ['id', 'content', 'embedding']
+      csv << ['id', 'content', 'tokens', 'embedding']
       @embeddings.map do |id, e|
-        csv << [e.id, e.content, e.embedding.join(';')]
+        csv << [e.id, e.content, e.tokens, e.embedding.join(';')]
       end
     end
   end

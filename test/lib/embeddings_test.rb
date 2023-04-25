@@ -28,28 +28,28 @@ class EmbeddingsTest <  ActiveSupport::TestCase
   end
 
   test '.new should accept a list of maps' do
-    one = {id: '1', content: 'one', embedding: [0.1, -0.9]}
-    two = {id: '2', content: 'two', embedding: [0.1, -0.9]}
+    one = {id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1}
+    two = {id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1}
     embeds = Embeddings.new([one, two])
     assert_equal(embeds.length, 2)
   end
 
   # TODO: Change to JSON serialization, its cleaner (CSV can have different flavours)
   test '#to_csv_s should produce string CSV' do
-    apple = {id: 'a', content: 'apple', embedding: [0.1, -0.900000000000003]}
+    apple = {id: 'a', content: 'apple', embedding: [0.1, -0.900000000000003], tokens: 1}
     embeds = Embeddings.new([apple])
-    assert_equal("id,content,embedding\na,apple,0.1;-0.900000000000003\n", embeds.to_csv_s) # Not sure about the extra newline, but CSV.generate adds it so...
+    assert_equal("id,content,tokens,embedding\na,apple,1,0.1;-0.900000000000003\n", embeds.to_csv_s) # Not sure about the extra newline, but CSV.generate adds it so...
   end
 
   test '.from_csv_s should hydrate a new Embeddings from string CSV' do
-    embeds = Embeddings.from_csv_s( "id,content,embedding\na,apple,0.1;-0.9\n")
+    embeds = Embeddings.from_csv_s( "id,content,tokens,embedding\na,apple,1,0.1;-0.9\n")
     assert_equal(embeds.length, 1)
   end
 
 
   test '#get should return an Embedding from id' do
-    one = {id: '1', content: 'one', embedding: [0.1, -0.9]}
-    two = {id: '2', content: 'two', embedding: [0.1, -0.9]}
+    one = {id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1}
+    two = {id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1}
     embeds = Embeddings.new([one, two])
     assert embeds.get('1').content == 'one' 
     assert embeds.get('2').content == 'two' 

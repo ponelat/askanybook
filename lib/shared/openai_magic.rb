@@ -51,7 +51,11 @@ class OpenAIMagic
           input: str
         }
     )
-    response.dig("data", 0, "embedding")
+
+    embedding = response.dig('data', 0, 'embedding')
+    tokens = response.dig('usage', 'prompt_tokens')
+
+    {embedding: embedding, tokens: tokens}
   end
 
 
