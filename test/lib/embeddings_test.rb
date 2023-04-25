@@ -10,9 +10,10 @@ class EmbeddingsTest <  ActiveSupport::TestCase
   far_a = Embeddings.normalize_vector([1,999])
   far_b = Embeddings.normalize_vector([1,900])
 
-  # Contains IDs: apple, banana, ostrich, giraffe, newspaper, fruit, animal, yellow.
-  # The last three (fruit, animal, yewllo) are treated like questions.
-  basic_fixture = File.read('test/fixtures/basic.embeddings.csv')
+  # Contains embeddings for: apple, banana, ostrich, giraffe, newspaper
+  basic_content = File.read('test/fixtures/files/basic.content.embeddings.csv')
+  # Contains embeddings for: fruit, yellow, animal
+  basic_subjects = File.read('test/fixtures/files/basic.subjects.embeddings.csv')
 
   test '.similarity near_a -> near_b greater than near_a -> far_a' do
     assert Embeddings.similarity(near_a, near_b) > Embeddings.similarity(near_a, far_a)
@@ -61,21 +62,50 @@ class EmbeddingsTest <  ActiveSupport::TestCase
   ## You can regenerate this or other fixtures with bin/csv-to-embeddings
   ##
 
-  test 'should correctly parse fixtures/basic.embeddings.csv' do
-    embeds = Embeddings.from_csv_s(basic_fixture)
-    assert_equal embeds.length, 8
+  test 'should correctly parse fixtures/basic.content.embeddings.csv' do
+    embeds = Embeddings.from_csv_s(basic_content)
+    assert_equal embeds.length, 5
     assert_equal embeds.get('apple').content, 'a juicy apple' 
     assert_equal embeds.get('apple').embedding.length, 1536 
   end
 
+  test 'should correctly parse fixtures/basic.subjects.embeddings.csv' do
+    embeds = Embeddings.from_csv_s(basic_subjects)
+    assert_equal embeds.length, 3
+    assert_equal embeds.get('fruit').content, 'fruit' 
+    assert_equal embeds.get('fruit').embedding.length, 1536 
+  end
+
   test 'apple is closer to banana than newspaper' do
-    embeds = Embeddings.from_csv_s(basic_fixture)
+    embeds = Embeddings.from_csv_s(basic_content)
     assert embeds.similarity('apple', 'banana') > embeds.similarity('apple', 'newspaper')
   end
 
   test 'ostrich is closer to giraffe than apple' do
-    embeds = Embeddings.from_csv_s(basic_fixture)
+    embeds = Embeddings.from_csv_s(basic_content)
     assert embeds.similarity('ostrich', 'giraffe') > embeds.similarity('ostrich', 'apple')
+  end
+
+  test '#closest_ids for yellow: apple,banana,giraffe' do
+    content = Embeddings.from_csv_s(basic_content)
+    subjects = Embeddings.from_csv_s(basic_subjects)
+    yellow = subjects.get('yellow')
+    ids = content.closest_ids(yellow.embedding)
+    assert_equal 'apple', ids[0] # Needs a qualifier (the yellow apple), so ranks higher than banana?
+    assert_equal 'banana', ids[1] # Typically known for being yellow
+    assert_equal 'giraffe', ids[2] # Also yellow, but less typically known for it
+  end
+
+  test '#closest_ids for animal: ostrich,giraffe' do
+    content = Embeddings.from_csv_s(basic_content)
+    subjects = Embeddings.from_csv_s(basic_subjects)
+    animal = subjects.get('animal')
+    ids = content.closest_ids(animal.embedding)
+
+    # I don't mind which ranks higher, as long as the top two are ostich,giraffe
+    top_two = [ids[0], ids[1]]
+    assert_includes top_two, 'ostrich' 
+    assert_includes top_two, 'giraffe' 
   end
 
 

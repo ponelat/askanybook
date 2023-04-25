@@ -40,6 +40,14 @@ class Embeddings
     @length
   end
 
+  # TODO: Replace with vector DB. 
+  def closest_ids(embedding)
+    @embeddings.values
+      .sort_by { |e| Embeddings.similarity(embedding, e.embedding) }
+      .map { |e| e.id }
+      .reverse
+  end
+
   def to_csv_s()
     CSV.generate do |csv|
       csv << ['id', 'content', 'embedding']
