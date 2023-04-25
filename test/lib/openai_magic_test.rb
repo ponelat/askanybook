@@ -21,4 +21,9 @@ class OpenAIMagicTest < ActiveSupport::TestCase
     assert_equal("juicy apple", OpenAIMagic.sanitize_text("juicy \n\n apple."))
   end
 
+  # TODO: replace with tiktoken_ruby
+  test '.token_count should return number of tokens in str' do
+    assert_equal OpenAIMagic.token_count('one two three four five'), 5
+  end
+
 end

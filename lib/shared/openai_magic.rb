@@ -9,6 +9,22 @@ class OpenAIMagic
   EMBEDDINGS_DIMENSIONS = 1536 # Number of columns in the embeddings
   # EMBEDDINGS_MAX_TOKENS = 8191 # Number of tokens accepted as input
 
+  # Downcase, remove punctiation and stop words (the,a).
+  def self.sanitize_text(text)
+    text = text.downcase
+    # Remove punctuation and special characters
+    text = text.gsub(/[^\w\s]/, '')
+    # Collapses words
+    # TODO: add back stopword filter
+    text = text.split(' ').join(' ')
+    return text
+  end
+
+  # TODO: Replace with tiktoken_ruby
+  def self.token_count(text)
+    text.length / 4 # This is 'quick-mafths'. Should be using tiktoken
+  end
+
   def initialize(api_key)
     @client = OpenAI::Client.new(access_token: api_key)
   end
@@ -38,14 +54,5 @@ class OpenAIMagic
     response.dig("data", 0, "embedding")
   end
 
-  # Downcase, remove punctiation and stop words (the,a).
-  def self.sanitize_text(text)
-    text = text.downcase
-    # Remove punctuation and special characters
-    text = text.gsub(/[^\w\s]/, '')
-    # Collapses words
-    text = text.split(' ').join(' ')
-    return text
-  end
 
 end
