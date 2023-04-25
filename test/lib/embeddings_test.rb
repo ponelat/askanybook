@@ -34,6 +34,7 @@ class EmbeddingsTest <  ActiveSupport::TestCase
     assert_equal(embeds.length, 2)
   end
 
+  # TODO: Change to JSON serialization, its cleaner (CSV can have different flavours)
   test '#to_csv_s should produce string CSV' do
     apple = {id: 'a', content: 'apple', embedding: [0.1, -0.900000000000003]}
     embeds = Embeddings.new([apple])

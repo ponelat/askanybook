@@ -1,33 +1,42 @@
+require_relative "./embedding"
+
 class Embeddings
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)
     embeddings = rows.map do |row|
       id = row['id']
       content = row['content']
-      embedding = row['embedding']
-      [id, content, embedding.split(';').map {|n| Float(n)}]
+      embedding_raw = row['embedding']
+      embedding = embedding_raw.split(';').map { |n| Float(n) }
+      {id: id, content: content, embedding: embedding }
     end
     Embeddings.new(embeddings)
   end
 
-  def self.similarity(a,b)
-    self.cosine_similarity(a,b)
+  def self.similarity(embedding_a,embedding_b)
+    self.cosine_similarity(embedding_a,embedding_b)
+  end
+
   end
 
   def initialize(table)
-    @table = table
+    @length = table.length
+    @embeddings = {}
+    table.each do |row|
+      e = Embedding.new(row)
+      @embeddings[e.id] = e
+    end
   end
 
   def length()
-    @table.length
+    @length
   end
 
   def to_csv_s()
     CSV.generate do |csv|
       csv << ['id', 'content', 'embedding']
-      @table.map do |row|
-        id, content, embedding = row.values_at(:id, :content, :embedding)
-        csv << [id, content, embedding.join(';')]
+      @embeddings.map do |id, e|
+        csv << [e.id, e.content, e.embedding.join(';')]
       end
     end
   end
