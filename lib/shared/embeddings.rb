@@ -38,6 +38,41 @@ class Embeddings
     end
   end
 
+  def get_best_context_for(vec, max_tokens)
+    # Using an array makes it easier to deal with space between context
+    # ...instead of context += ' ' + content
+    contexts = []
+    tokens_in_context = 0
+
+    closest_ids(vec).each do |id|
+      next_embedding = get(id)
+      tokens = next_embedding.tokens
+      content = next_embedding.content
+
+      # Add whole context, as we have space
+      if tokens_in_context + tokens <= max_tokens 
+        contexts << next_embedding.content
+
+        tokens_in_context += next_embedding.tokens
+
+      # Handle interpolation case
+      elsif tokens_in_context < max_tokens
+        # Approximate
+        percentage = (0.0 + max_tokens - tokens_in_context)/tokens
+        chars_to_keep = (percentage * content.length).floor
+        contexts << content.truncate(chars_to_keep, omission: '')
+        tokens_in_context = max_tokens
+        break
+
+      # No more space 
+      else
+        break
+      end
+    end
+    contexts.join(' ')
+  end
+
+
   def length()
     @length
   end

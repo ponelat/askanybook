@@ -108,5 +108,14 @@ class EmbeddingsTest <  ActiveSupport::TestCase
     assert_includes top_two, 'giraffe' 
   end
 
+  test '#collect_context should return a string of best suited context up to a token count' do
+    content = Embeddings.from_csv_s(basic_content)
+    subjects = Embeddings.from_csv_s(basic_subjects)
+
+    yellow_em = subjects.get('yellow').embedding
+    context = content.get_best_context_for(yellow_em, 6)
+    truncated_context = 'a juicy apple a rotten banana' # Aprox for 6 tokens
+    assert_equal truncated_context, context
+  end
 
 end
