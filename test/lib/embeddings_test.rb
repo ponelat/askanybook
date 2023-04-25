@@ -47,4 +47,12 @@ class EmbeddingsTest <  ActiveSupport::TestCase
   end
 
 
+  test '#get should return an Embedding from id' do
+    one = {id: '1', content: 'one', embedding: [0.1, -0.9]}
+    two = {id: '2', content: 'two', embedding: [0.1, -0.9]}
+    embeds = Embeddings.new([one, two])
+    assert embeds.get('1').content == 'one' 
+    assert embeds.get('2').content == 'two' 
+  end
+
 end

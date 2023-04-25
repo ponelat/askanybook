@@ -17,6 +17,9 @@ class Embeddings
     self.cosine_similarity(embedding_a,embedding_b)
   end
 
+  def get(id)
+    @embeddings[id]
+  end
   end
 
   def initialize(table)
