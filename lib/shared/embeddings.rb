@@ -20,6 +20,11 @@ class Embeddings
   def get(id)
     @embeddings[id]
   end
+
+  def similarity(id_0,id_1)
+    em_0 = get(id_0).embedding
+    em_1 = get(id_1).embedding
+    Embeddings.similarity(em_0, em_1)
   end
 
   def initialize(table)

@@ -12,8 +12,7 @@ class EmbeddingsTest <  ActiveSupport::TestCase
 
   # Contains IDs: apple, banana, ostrich, giraffe, newspaper, fruit, animal, yellow.
   # The last three (fruit, animal, yewllo) are treated like questions.
-  # basic_fixture = CSV.read('../fixtures/basic.embeddings.csv', headers: true)
-
+  basic_fixture = File.read('test/fixtures/basic.embeddings.csv')
 
   test '.similarity near_a -> near_b greater than near_a -> far_a' do
     assert Embeddings.similarity(near_a, near_b) > Embeddings.similarity(near_a, far_a)
@@ -54,5 +53,30 @@ class EmbeddingsTest <  ActiveSupport::TestCase
     assert embeds.get('1').content == 'one' 
     assert embeds.get('2').content == 'two' 
   end
+
+
+  ##
+  ## Semantic tests, dependent on real AI embeddings. 
+  ## Using a generated fixture from test/fixtures/basic.content.csv -> basic.embeddings.csv
+  ## You can regenerate this or other fixtures with bin/csv-to-embeddings
+  ##
+
+  test 'should correctly parse fixtures/basic.embeddings.csv' do
+    embeds = Embeddings.from_csv_s(basic_fixture)
+    assert_equal embeds.length, 8
+    assert_equal embeds.get('apple').content, 'a juicy apple' 
+    assert_equal embeds.get('apple').embedding.length, 1536 
+  end
+
+  test 'apple is closer to banana than newspaper' do
+    embeds = Embeddings.from_csv_s(basic_fixture)
+    assert embeds.similarity('apple', 'banana') > embeds.similarity('apple', 'newspaper')
+  end
+
+  test 'ostrich is closer to giraffe than apple' do
+    embeds = Embeddings.from_csv_s(basic_fixture)
+    assert embeds.similarity('ostrich', 'giraffe') > embeds.similarity('ostrich', 'apple')
+  end
+
 
 end
