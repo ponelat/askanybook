@@ -1,19 +1,27 @@
 #!/usr/bin/env ruby
 require 'dotenv/load'
+require 'json'
 require_relative '../lib/shared/openai_magic'
 
 OPENAI_API_KEY = ENV['OPENAI_API_KEY']
 
 if OPENAI_API_KEY.nil?
-  raise 'Missing OpenAI Key, please update .env file.'
+  puts 'Missing OpenAI Key, please update .env file.'
+  exit 1
 end
 
-ai_magic = OpenAIMagic.new(OPENAI_API_KEY)
 question, _ = ARGV
 
-puts "Q: #{question}"
+if question.nil?
+  puts 'No question provided. Please provide a single quoted argument to OpenAI.'
+  exit 1
+end
+
+# We have everything we need....
+ai_magic = OpenAIMagic.new(OPENAI_API_KEY)
 answer = ai_magic.get_completion(question)
 
+puts "Q: #{question}"
 print 'A: '
 # Silly, but fun...
 answer.chars.each do |c|
