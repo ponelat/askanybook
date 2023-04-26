@@ -60,3 +60,14 @@ class OpenAIMagic
 
 
 end
+
+
+## Example Responses
+# {
+#   "error": {
+#     "message": "This model's maximum context length is 8191 tokens, however you requested 8363 tokens (8363 in your prompt; 0 for the completion). Please reduce your prompt; or completion length.",
+#     "type": "invalid_request_error",
+#     "param": null,
+#     "code": null
+#   }
+# }
