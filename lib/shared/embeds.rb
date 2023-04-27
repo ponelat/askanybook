@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './embed'
+require_relative './tokenizer'
 
 class Embeds
   def self.from_csv_s(csv_s)
@@ -26,12 +27,6 @@ class Embeds
 
   def similarity(id0, id1)
     Embeds.similarity get(id0).embedding, get(id1).embedding
-  end
-
-  # TODO: Replace with tiktoken_ruby
-  # For now useing the very "rough mafths" of 6 chars per token (which includes whitespace)
-  def self.split_into_tokens(str)
-    str.chars.each_slice(6).map(&:join)
   end
 
   def initialize(list_of_embeds)
@@ -63,9 +58,7 @@ class Embeds
       # Handle interpolation case
       elsif tokens_in_context < max_tokens
         # Approximate
-        percentage = (0.0 + max_tokens - tokens_in_context) / tokens
-        chars_to_keep = (percentage * content.length).floor
-        contexts << content.truncate(chars_to_keep, omission: '')
+        contexts << Tokenizer.split_into_tokens(content)[0, max_tokens - tokens_in_context].join(' ')
         tokens_in_context = max_tokens
         break
 
