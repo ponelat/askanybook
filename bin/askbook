@@ -1,0 +1,81 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'dotenv/load'
+require 'optparse'
+require 'logger'
+require 'csv'
+require_relative '../lib/shared/openai_magic'
+require_relative '../lib/shared/embeds'
+require_relative '../lib/shared/persona'
+require_relative '../lib/shared/persona_manifest'
+
+options = {}
+opts_parser = OptionParser.new do |opts|
+  opts.banner = 'Usage: askbook --book ./book.manifest.csv --question QUESTION'
+  opts.separator ' '
+  opts.separator "\tOPENAI_API_KEY (required). As ENV variable or entry in .env"
+  opts.separator ' '
+  opts.on('-b', '--book FILENAME', 'Specify persona CSV file [embeds_path,prompt_template] (required)')
+  opts.on('-q', '--question QUESTION', 'The question to ask the book (required). Typically wrapped in quotes')
+  opts.on('-v', '--verbose', 'Dump debugging info')
+end
+opts_parser.parse!(into: options)
+options[:openai_key] = ENV['OPENAI_API_KEY']
+
+# Check that the required option is present
+begin
+  raise OptionParser::MissingArgument if options[:book].nil?
+  raise OptionParser::MissingArgument if options[:question].nil?
+  raise OptionParser::MissingArgument if options[:openai_key].nil?
+rescue OptionParser::MissingArgument
+  puts opts_parser.help
+  exit 1
+end
+
+logger = Logger.new(STDOUT)
+logger.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
+
+# OpenAI Client
+ai_magic = OpenAIMagic.new(options[:openai_key])
+
+# Get the data
+manifest_csv = File.read(options[:book])
+manifest = PersonaManifest.from_csv_s(manifest_csv)
+
+embeds_abs_path = File.join(File.dirname(options[:book]), manifest.embeds_path)
+logger.debug("Embeds Absolute path: #{embeds_abs_path}")
+embeds_csv = File.read(embeds_abs_path)
+embeds = Embeds.from_csv_s(embeds_csv)
+
+# Create out Persona from the data
+persona = Persona.new(embeds: embeds, template: manifest.prompt_template)
+
+# Question time
+question = options[:question]
+puts "Q: #{question}"
+
+# Get the embedding
+embedding_res = ai_magic.get_embedding(question + '?') ## Does double ?? matter?
+question_embed = Embed.new(
+  id: '',
+  content: question,
+  tokens: embedding_res[:tokens],
+  embedding: embedding_res[:embedding]
+)
+logger.debug("Question tokens: #{question_embed.tokens}")
+
+# Build the prompt
+prompt = persona.build_prompt(question_embed, 1000)
+logger.debug("Prompt: #{prompt}")
+
+# Ask AI
+answer_res = ai_magic.get_completion(prompt)
+logger.debug("Usage: #{answer_res.usage}")
+
+# Print answer, typed out... because that's What ChatGPT Would Do TM
+print 'A: '
+answer_res.answer.chars.each do |c|
+  print c
+  sleep(0.05)
+end

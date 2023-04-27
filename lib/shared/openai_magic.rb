@@ -6,6 +6,9 @@ require 'openai'
 # Docs for embeddings: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
 class OpenAIMagic
+  ChatCompletionResponse = Struct.new(:answer, :usage, keyword_init: true)
+  Usage = Struct.new(:prompt_tokens, :completion_tokens, :total_tokens)
+
   # For text-embedding-ada-002
   EMBEDDINGS_DIMENSIONS = 1536 # Number of columns in the embeddings
   # EMBEDDINGS_MAX_TOKENS = 8191 # Number of tokens accepted as input
@@ -39,7 +42,14 @@ class OpenAIMagic
         temperature: 0.0
       }
     )
-    response.dig('choices', 0, 'message', 'content')
+    answer = response.dig('choices', 0, 'message', 'content')
+    usage_j = response['usage']
+    usage = Usage.new(
+      usage_j['prompt_tokens'],
+      usage_j['completion_tokens'],
+      usage_j['total_tokens']
+    )
+    ChatCompletionResponse.new(answer: answer, usage: usage)
   end
 
   def get_embedding(str)
