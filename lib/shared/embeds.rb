@@ -3,6 +3,7 @@
 require_relative './embed'
 
 class Embeds
+ 
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)
     embeddings = rows.map do |row|
@@ -30,22 +31,28 @@ class Embeds
     Embeds.similarity(em_0, em_1)
   end
 
-  def initialize(table)
-    @length = table.length
+  # TODO: Replace with tiktoken_ruby
+  # For now useing the very "rough mafths" of 6 chars per token (which includes whitespace)
+  def self.split_into_tokens(str)
+    str.chars.each_slice(6).map(&:join)
+  end
+
+  def initialize(list_of_embeds)
+    @length = list_of_embeds.length
     @embeddings = {}
-    table.each do |row|
+    list_of_embeds.each do |row|
       e = Embed.new(row)
       @embeddings[e.id] = e
     end
   end
 
-  def get_best_context_for(vec, max_tokens)
+  def get_best_context_for(embedding, max_tokens)
     # Using an array makes it easier to deal with space between context
     # ...instead of context += ' ' + content
     contexts = []
     tokens_in_context = 0
 
-    closest_ids(vec).each do |id|
+    closest_ids(embedding).each do |id|
       next_embedding = get(id)
       tokens = next_embedding.tokens
       content = next_embedding.content

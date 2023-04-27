@@ -117,4 +117,11 @@ class EmbedsTest < ActiveSupport::TestCase
     truncated_context = 'a juicy apple a rotten banana' # Aprox for 6 tokens
     assert_equal truncated_context, context
   end
+
+  # TODO: Replace with tiktoken_ruby. 
+  test '.split_into_tokens should return list of tokens' do
+    str = 'this is very naive'
+    tokens = Embeds.split_into_tokens(str)
+    assert_equal ['this i', 's very', ' naive'], tokens
+  end
 end
