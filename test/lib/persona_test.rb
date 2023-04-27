@@ -4,6 +4,8 @@ require 'test_helper'
 
 class PersonaTest < ActiveSupport::TestCase
   require 'shared/persona'
+  require 'shared/embeds'
+  require 'shared/embed'
 
   one = Embeds.normalize_vector([1,1])
   two = Embeds.normalize_vector([1,2])
@@ -13,10 +15,10 @@ class PersonaTest < ActiveSupport::TestCase
   # content = Embeds.from_csv_s(File.read('test/fixtures/files/basic.content.embeds.csv'))
   # subjects = Embeds.from_csv_s(File.read('test/fixtures/files/basic.subjects.embeds.csv'))
   embeds = Embeds.new(
-    [{ id: 'one   ', tokens: 1, content: 'one', embedding: one },
-     { id: 'two   ', tokens: 1, content: 'two', embedding: two },
-     { id: 'three ', tokens: 1, content: 'three', embedding: three },
-     { id: 'four  ', tokens: 1, content: 'four', embedding: four }]
+    [Embed.new(id: 'one   ', tokens: 1, content: 'one', embedding: one),
+     Embed.new(id: 'two   ', tokens: 1, content: 'two', embedding: two),
+     Embed.new(id: 'three ', tokens: 1, content: 'three', embedding: three),
+     Embed.new(id: 'four  ', tokens: 1, content: 'four', embedding: four)]
   )
 
   test '.fill_template should replace $$content and $$question' do

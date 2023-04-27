@@ -4,6 +4,7 @@ require 'test_helper'
 
 class EmbedsTest < ActiveSupport::TestCase
   require 'shared/embeds'
+  require 'shared/embed'
 
   # NOTE: OpenAI already normalizes their embeddings to L2 = 1.
   # For testing arbitrary vectors, you'll need to normalize beforehand.
@@ -29,16 +30,16 @@ class EmbedsTest < ActiveSupport::TestCase
     assert Embeds.similarity(far_a, far_b) > Embeds.similarity(far_a, near_a)
   end
 
-  test '.new should accept a list of maps' do
-    one = { id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1 }
-    two = { id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1 }
+  test '.new should accept a list of Embeds' do
+    one = Embed.new(id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1)
+    two = Embed.new(id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1)
     embeds = Embeds.new([one, two])
     assert_equal(embeds.length, 2)
   end
 
   # TODO: Change to JSON serialization, its cleaner (CSV can have different flavours)
   test '#to_csv_s should produce string CSV' do
-    apple = { id: 'a', content: 'apple', embedding: [0.1, -0.900000000000003], tokens: 1 }
+    apple = Embed.new(id: 'a', content: 'apple', embedding: [0.1, -0.900000000000003], tokens: 1)
     embeds = Embeds.new([apple])
     assert_equal("id,content,tokens,embedding\na,apple,1,0.1;-0.900000000000003\n", embeds.to_csv_s) # Not sure about the extra newline, but CSV.generate adds it so...
   end
@@ -49,8 +50,8 @@ class EmbedsTest < ActiveSupport::TestCase
   end
 
   test '#get should return an Embed from id' do
-    one = { id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1 }
-    two = { id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1 }
+    one = Embed.new(id: '1', content: 'one', embedding: [0.1, -0.9], tokens: 1)
+    two = Embed.new(id: '2', content: 'two', embedding: [0.1, -0.9], tokens: 1)
     embeds = Embeds.new([one, two])
     assert embeds.get('1').content == 'one'
     assert embeds.get('2').content == 'two'

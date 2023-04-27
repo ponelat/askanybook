@@ -12,7 +12,7 @@ class Embeds
       tokens = Integer(row['tokens'])
       embedding_raw = row['embedding']
       embedding = embedding_raw.split(';').map { |n| Float(n) }
-      { id: id, content: content, tokens: tokens, embedding: embedding }
+      Embed.new(id: id, content: content, tokens: tokens, embedding: embedding)
     end
     Embeds.new(embeddings)
   end
@@ -32,9 +32,8 @@ class Embeds
   def initialize(list_of_embeds)
     @length = list_of_embeds.length
     @embeddings = {}
-    list_of_embeds.each do |row|
-      e = Embed.new(row)
-      @embeddings[e.id] = e
+    list_of_embeds.each do |embed|
+      @embeddings[embed.id] = embed
     end
   end
 
