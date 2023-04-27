@@ -13,9 +13,9 @@ class EmbedsTest < ActiveSupport::TestCase
   far_b = Embeds.normalize_vector([1, 900])
 
   # Contains embeddings for: apple, banana, ostrich, giraffe, newspaper
-  basic_content = File.read('test/fixtures/files/basic.content.embeddings.csv')
+  basic_content = File.read('test/fixtures/files/basic.content.embeds.csv')
   # Contains embeddings for: fruit, yellow, animal
-  basic_subjects = File.read('test/fixtures/files/basic.subjects.embeddings.csv')
+  basic_subjects = File.read('test/fixtures/files/basic.subjects.embeds.csv')
 
   test '.similarity near_a -> near_b greater than near_a -> far_a' do
     assert Embeds.similarity(near_a, near_b) > Embeds.similarity(near_a, far_a)
@@ -108,7 +108,7 @@ class EmbedsTest < ActiveSupport::TestCase
     assert_includes top_two, 'giraffe'
   end
 
-  test '#collect_context should return a string of best suited context up to a token count' do
+  test '#get_best_context_for should return a string of best suited context up to a token count' do
     content = Embeds.from_csv_s(basic_content)
     subjects = Embeds.from_csv_s(basic_subjects)
 
