@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative './embedding'
+require_relative './embed'
 
-class Embeddings
+class Embeds
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)
     embeddings = rows.map do |row|
@@ -13,7 +13,7 @@ class Embeddings
       embedding = embedding_raw.split(';').map { |n| Float(n) }
       { id: id, content: content, tokens: tokens, embedding: embedding }
     end
-    Embeddings.new(embeddings)
+    Embeds.new(embeddings)
   end
 
   def self.similarity(embedding_a, embedding_b)
@@ -27,14 +27,14 @@ class Embeddings
   def similarity(id_0, id_1)
     em_0 = get(id_0).embedding
     em_1 = get(id_1).embedding
-    Embeddings.similarity(em_0, em_1)
+    Embeds.similarity(em_0, em_1)
   end
 
   def initialize(table)
     @length = table.length
     @embeddings = {}
     table.each do |row|
-      e = Embedding.new(row)
+      e = Embed.new(row)
       @embeddings[e.id] = e
     end
   end
@@ -78,7 +78,7 @@ class Embeddings
   # TODO: Replace with vector DB.
   def closest_ids(embedding)
     @embeddings.values
-               .sort_by { |e| Embeddings.similarity(embedding, e.embedding) }
+               .sort_by { |e| Embeds.similarity(embedding, e.embedding) }
                .map(&:id)
                .reverse
   end

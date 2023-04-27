@@ -2,7 +2,7 @@
 
 require 'active_model'
 
-class Embedding
+class Embed
   include ActiveModel::Model
 
   attr_accessor :id, :content, :embedding, :tokens

@@ -3,7 +3,7 @@ require 'dotenv/load'
 require "optparse"
 require "csv"
 require_relative '../lib/shared/openai_magic'
-require_relative '../lib/shared/embeddings'
+require_relative '../lib/shared/embeds'
 
 options = {}
 opts_parser = OptionParser.new do |opts|
@@ -54,7 +54,7 @@ contents.each do |row|
 end
 
 # So  that we serialize it the right way
-embeddings = Embeddings.new(list_of_embeddings)
+embeddings = Embeds.new(list_of_embeddings)
 File.write(output_name, embeddings.to_csv_s)
 
 puts "Done, embeddings are in #{output_name}"
