@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'csv'
 
 require 'active_model'
 
@@ -8,7 +9,6 @@ class PersonaManifest
 
   attribute :embeds_path, :string
   validates :embeds_path, presence: true
-
 
   attribute :prompt_template, :string
   validates :prompt_template, presence: true
@@ -24,7 +24,9 @@ class PersonaManifest
   def to_csv_s()
     CSV.generate do |csv|
       csv << %w[embeds_path prompt_template]
-      csv << [embeds_path, prompt_template]
+      # Escape newlines
+      escaped_template = prompt_template.gsub("\n", '\\n')
+      csv << [embeds_path, escaped_template]
     end
   end
 

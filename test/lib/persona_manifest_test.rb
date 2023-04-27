@@ -14,10 +14,16 @@ class PersonaTest < ActiveSupport::TestCase
 
 
   test '#to_csv_s should return str for csv file' do
-    manifest = PersonaManifest.new(embeds_path: '/path/to/embeds.csv', prompt_template: 'foo,bar')
+    manifest = PersonaManifest.new(embeds_path: '/path/to/embeds.csv', prompt_template: 'foo')
     csv = manifest.to_csv_s
-    assert_equal "embeds_path,prompt_template\n/path/to/embeds.csv,\"foo,bar\"\n", csv
+    assert_equal "embeds_path,prompt_template\n/path/to/embeds.csv,foo\n", csv
   end
 
+
+  test '#to_csv_s should escape newlines' do
+    manifest = PersonaManifest.new(embeds_path: '/path/to/embeds.csv', prompt_template: "foo\nbar")
+    csv = manifest.to_csv_s
+    assert_equal "embeds_path,prompt_template\n/path/to/embeds.csv,foo\\nbar\n", csv
+  end
 
 end
