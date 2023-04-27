@@ -49,3 +49,8 @@ end
 gem "ruby-openai", "~> 3.7"
 gem "dotenv-rails", "~> 2.8"
 gem "stopwords", "~> 0.2"
+
+# This silences warnings, I was getting running rails.
+# See: starting https://github.com/ruby/net-imap/issues/16#issuecomment-803086765
+# TODO: Update to Ruby 3.x as an alternative.
+gem "net-http", "~> 0.3.2"

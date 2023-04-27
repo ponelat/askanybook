@@ -383,6 +383,17 @@
     };
     version = "0.6.0";
   };
+  net-http = {
+    dependencies = ["uri"];
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0y55ib1v2b8prqfi9ij7hca60b1j94s2bzr6vskwi3i5735472wq";
+      type = "gem";
+    };
+    version = "0.3.2";
+  };
   net-imap = {
     dependencies = ["date" "net-protocol"];
     groups = ["default"];
@@ -625,6 +636,16 @@
       type = "gem";
     };
     version = "2.0.6";
+  };
+  uri = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1vigw7nfszfqgikr6n574k9bfh0rvs74z8xq46rz2zsm8249l8cc";
+      type = "gem";
+    };
+    version = "0.12.1";
   };
   websocket-driver = {
     dependencies = ["websocket-extensions"];
