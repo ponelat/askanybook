@@ -3,7 +3,6 @@
 require_relative './embed'
 
 class Embeds
- 
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)
     embeddings = rows.map do |row|
@@ -18,17 +17,15 @@ class Embeds
   end
 
   def self.similarity(embedding_a, embedding_b)
-    cosine_similarity(embedding_a, embedding_b)
+    dot_product(embedding_a, embedding_b)
   end
 
   def get(id)
     @embeddings[id]
   end
 
-  def similarity(id_0, id_1)
-    em_0 = get(id_0).embedding
-    em_1 = get(id_1).embedding
-    Embeds.similarity(em_0, em_1)
+  def similarity(id0, id1)
+    Embeds.similarity get(id0).embedding, get(id1).embedding
   end
 
   # TODO: Replace with tiktoken_ruby
@@ -99,23 +96,15 @@ class Embeds
     end
   end
 
-  # Credit: ChatGPT, modified
-  # Note: requires that the vectors are already normalized to 1. You can call ".normalize_vector" if you don't know.
-  def self.cosine_similarity(a, b)
+  # Note: OpenAI already normalizes the embeddings
+  # If you want to compare arbitrary vectors (like in testing), call normalise_vector on each vector first.
+  def self.dot_product(vec_a, vec_b)
     # Calculate the dot product of the two vectors
-    dot_product = a.zip(b).map { |a, b| a * b }.reduce(:+)
-
-    # Calculate the L2 norm of each vector
-    norm_1 = Math.sqrt(a.map { |v| v**2 }.reduce(:+))
-    norm_2 = Math.sqrt(b.map { |v| v**2 }.reduce(:+))
-
-    # Calculate the cosine similarity between the two vectors
-    dot_product / (norm_1 * norm_2)
+    # Dot product of vectors. To be useful,
+    vec_a.zip(vec_b).map { |a, b| a * b }.reduce(:+)
   end
 
-  # OpenAI already normalizes their embedding vectors to 1, but for testing purpose (since I can't be arsed for the math), we re-normalize to one.
   # PS: L2 normalized to 1 = sum of all squares of all elements = 1
-  # Credit: ChatGPT
   def self.normalize_vector(vector)
     # Calculate the L2 norm of the vector
     l2_norm = Math.sqrt(vector.map { |v| v**2 }.reduce(:+))
