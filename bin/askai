@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'dotenv/load'
 require 'json'
 require_relative '../lib/shared/openai_magic'
@@ -10,7 +12,7 @@ if OPENAI_API_KEY.nil?
   exit 1
 end
 
-question, _ = ARGV
+question, = ARGV
 
 if question.nil?
   puts 'No question provided. Please provide a single quoted argument to OpenAI.'
