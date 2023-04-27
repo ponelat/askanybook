@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_model'
 
 class Persona
@@ -5,7 +7,7 @@ class Persona
   include ActiveModel::Attributes
   # include ActiveModel::Validations
 
-  attribute :template, :string, default: "$$context $$question"
+  attribute :template, :string, default: '$$context $$question'
 
   # # TODO: Add Embeddings type
   # attribute :embeddings
@@ -15,5 +17,4 @@ class Persona
   def self.fill_template(str, context, question)
     str.gsub('$$question', question).gsub('$$context', context)
   end
-
 end
