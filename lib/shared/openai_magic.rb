@@ -7,6 +7,7 @@ require 'openai'
 
 class OpenAIMagic
   ChatCompletionResponse = Struct.new(:answer, :usage, keyword_init: true)
+  EmbeddingResponse = Struct.new(:embedding, :usage, keyword_init: true)
   Usage = Struct.new(:prompt_tokens, :completion_tokens, :total_tokens)
 
   # For text-embedding-ada-002
@@ -64,9 +65,18 @@ class OpenAIMagic
     )
 
     embedding = response.dig('data', 0, 'embedding')
-    tokens = response.dig('usage', 'prompt_tokens')
 
-    { embedding: embedding, tokens: tokens }
+    usage_j = response['usage']
+    usage = Usage.new(
+      usage_j['prompt_tokens'],
+      usage_j['completion_tokens'],
+      usage_j['total_tokens']
+    )
+
+    EmbeddingResponse.new(
+      embedding: embedding,
+      usage: usage
+    )
   end
 end
 

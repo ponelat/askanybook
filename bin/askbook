@@ -60,8 +60,8 @@ embedding_res = ai_magic.get_embedding(question + '?') ## Does double ?? matter?
 question_embed = Embed.new(
   id: '',
   content: question,
-  tokens: embedding_res[:tokens],
-  embedding: embedding_res[:embedding]
+  tokens: embedding_res.usage.prompt_tokens,
+  embedding: embedding_res.embedding
 )
 logger.debug("Question tokens: #{question_embed.tokens}")
 
