@@ -58,3 +58,5 @@ gem 'stopwords', '~> 0.2'
 gem 'net-http', '~> 0.3.2'
 gem 'rubocop', '~> 1.50', require: false
 gem 'rubocop-rails', '~> 2.19', require: false
+
+gem "pdf-reader", "~> 2.11"

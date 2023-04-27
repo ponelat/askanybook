@@ -120,6 +120,26 @@
     };
     version = "7.0.4.3";
   };
+  afm = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "06kj9hgd0z8pj27bxp2diwqh6fv7qhwwm17z64rhdc4sfn76jgn8";
+      type = "gem";
+    };
+    version = "0.2.2";
+  };
+  Ascii85 = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "1ds4v9xgsyvijnlflak4dzf1qwmda9yd5bv8jwsb56nngd399rlw";
+      type = "gem";
+    };
+    version = "1.1.0";
+  };
   ast = {
     groups = ["default"];
     platforms = [];
@@ -241,6 +261,16 @@
       type = "gem";
     };
     version = "1.1.0";
+  };
+  hashery = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "0qj8815bf7q6q7llm5rzdz279gzmpqmqqicxnzv066a020iwqffj";
+      type = "gem";
+    };
+    version = "2.1.2";
   };
   httparty = {
     dependencies = ["mini_mime" "multi_xml"];
@@ -500,6 +530,17 @@
     };
     version = "3.2.2.1";
   };
+  pdf-reader = {
+    dependencies = ["Ascii85" "afm" "hashery" "ruby-rc4" "ttfunk"];
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "09sx25jpnip2sp6wh5sn5ad7za78rfi95qp5iiczfh43z4jqa8q3";
+      type = "gem";
+    };
+    version = "2.11.0";
+  };
   puma = {
     dependencies = ["nio4r"];
     groups = ["default"];
@@ -699,6 +740,16 @@
     };
     version = "1.13.0";
   };
+  ruby-rc4 = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "00vci475258mmbvsdqkmqadlwn6gj9m01sp7b5a3zd90knil1k00";
+      type = "gem";
+    };
+    version = "0.1.5";
+  };
   sqlite3 = {
     dependencies = ["mini_portile2"];
     groups = ["default"];
@@ -739,6 +790,16 @@
       type = "gem";
     };
     version = "0.3.2";
+  };
+  ttfunk = {
+    groups = ["default"];
+    platforms = [];
+    source = {
+      remotes = ["https://rubygems.org"];
+      sha256 = "15iaxz9iak5643bq2bc0jkbjv8w2zn649lxgvh5wg48q9d4blw13";
+      type = "gem";
+    };
+    version = "1.7.0";
   };
   tzinfo = {
     dependencies = ["concurrent-ruby"];
