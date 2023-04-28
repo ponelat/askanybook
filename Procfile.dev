@@ -1,0 +1,2 @@
+server: rails server 
+frontend: npm run start --prefix frontend

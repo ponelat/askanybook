@@ -83,6 +83,7 @@ GEM
       dotenv (= 2.8.1)
       railties (>= 3.2)
     erubi (1.12.0)
+    foreman (0.87.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     hashery (2.1.2)
@@ -214,6 +215,7 @@ DEPENDENCIES
   bootsnap
   debug
   dotenv-rails (~> 2.8)
+  foreman (~> 0.87.2)
   net-http (~> 0.3.2)
   pdf-reader (~> 2.11)
   puma (~> 5.0)
