@@ -19,22 +19,26 @@ function App() {
     }, [])
 
     if(loading) {
-        return 'Loading...'
+        return (
+	    <div>
+	      'Loading...'
+	    </div>
+        )
     }
 
     if(error) {
         return (
-            <p style={{color: 'red', padding: '20px'}}>
+            <p className="p-4 fg-red">
               {error+''}
             </p>
         )
     }
 
     return (
-	<div style={{padding: '20px'}}>
+	<div className="p-4 text-green-900">
           <pre>
             <code>
-	      Health: {JSON.stringify(health, null, 2)}
+	      Healthy: {JSON.stringify(health, null, 2)}
             </code>
           </pre>
 	</div>
