@@ -48,6 +48,8 @@ pkgs.mkShell {
     rubyEnv
     rubyEnv.wrappedRuby
     pkgs.entr
+
+    pkgs.nodejs-18_x
   ];
 
 }
