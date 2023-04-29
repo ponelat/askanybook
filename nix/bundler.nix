@@ -1,6 +1,10 @@
 with import <nixpkgs> {};
+let
+  ruby = pkgs.ruby_3_1;
+in
 pkgs.mkShell {
   buildInputs = with pkgs;[
+    ruby
     bundler
     bundix
   ];

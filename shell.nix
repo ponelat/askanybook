@@ -1,5 +1,6 @@
 with import <nixpkgs> {};
 let
+  ruby = ruby_3_1;
   rubyEnv = pkgs.bundlerEnv {
     inherit ruby;
     name = "askmybook";
@@ -45,9 +46,12 @@ in
 pkgs.mkShell {
 
   buildInputs = [
+    ruby
     rubyEnv
     rubyEnv.wrappedRuby
+
     pkgs.entr
+    pkgs.fd
 
     pkgs.nodejs-18_x
   ];
