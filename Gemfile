@@ -46,6 +46,8 @@ end
 group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+  gem 'rubocop', '~> 1.50', require: false
+  gem 'rubocop-rails', '~> 2.19', require: false
 end
 
 gem 'dotenv-rails', '~> 2.8'
@@ -56,9 +58,9 @@ gem 'stopwords', '~> 0.2'
 # See: starting https://github.com/ruby/net-imap/issues/16#issuecomment-803086765
 # TODO: Update to Ruby 3.x as an alternative.
 gem 'net-http', '~> 0.3.2'
-gem 'rubocop', '~> 1.50', require: false
-gem 'rubocop-rails', '~> 2.19', require: false
 
 gem "pdf-reader", "~> 2.11"
 
 gem "foreman", "~> 0.87.2"
+
+gem "rails-views", "~> 0.2.1"
