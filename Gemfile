@@ -59,8 +59,8 @@ gem 'stopwords', '~> 0.2'
 # TODO: Update to Ruby 3.x as an alternative.
 gem 'net-http', '~> 0.3.2'
 
-gem "pdf-reader", "~> 2.11"
+gem 'pdf-reader', '~> 2.11'
 
-gem "foreman", "~> 0.87.2"
+gem 'foreman', '~> 0.87.2'
 
-gem "rails-views", "~> 0.2.1"
+gem 'rails-views', '~> 0.2.1'

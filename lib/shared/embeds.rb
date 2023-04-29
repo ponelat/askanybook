@@ -12,7 +12,7 @@ class Embeds
       tokens = Integer(row['tokens'])
       embedding_raw = row['embedding']
       embedding = embedding_raw.split(';').map { |n| Float(n) }
-      Embed.new(id: id, content: content, tokens: tokens, embedding: embedding)
+      Embed.new(id:, content:, tokens:, embedding:)
     end
     Embeds.new(embeddings)
   end
@@ -88,7 +88,7 @@ class Embeds
     end
   end
 
-  # Note: OpenAI already normalizes the embeddings
+  # NOTE: OpenAI already normalizes the embeddings
   # If you want to compare arbitrary vectors (like in testing), call normalise_vector on each vector first.
   def self.dot_product(vec_a, vec_b)
     # Calculate the dot product of the two vectors

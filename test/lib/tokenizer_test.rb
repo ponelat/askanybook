@@ -17,5 +17,4 @@ class TokenizerTest < ActiveSupport::TestCase
     length = Tokenizer.count_tokens(str)
     assert_equal length, tokens.length
   end
-
 end

@@ -7,10 +7,10 @@ class PersonaTest < ActiveSupport::TestCase
   require 'shared/embeds'
   require 'shared/embed'
 
-  one = Embeds.normalize_vector([1,1])
-  two = Embeds.normalize_vector([1,2])
-  three = Embeds.normalize_vector([1,3])
-  four = Embeds.normalize_vector([1,4])
+  one = Embeds.normalize_vector([1, 1])
+  two = Embeds.normalize_vector([1, 2])
+  three = Embeds.normalize_vector([1, 3])
+  four = Embeds.normalize_vector([1, 4])
 
   # content = Embeds.from_csv_s(File.read('test/fixtures/files/basic.content.embeds.csv'))
   # subjects = Embeds.from_csv_s(File.read('test/fixtures/files/basic.subjects.embeds.csv'))
@@ -27,7 +27,7 @@ class PersonaTest < ActiveSupport::TestCase
   end
 
   test 'build_prompt should take an embedding and return prompt' do
-    persona = Persona.new(embeds: embeds, template: 'Intro. $$context. $$question')
+    persona = Persona.new(embeds:, template: 'Intro. $$context. $$question')
 
     question_embed = Embed.new(
       id: 'five',
@@ -39,5 +39,4 @@ class PersonaTest < ActiveSupport::TestCase
     prompt = persona.build_prompt(question_embed, 6)
     assert_equal 'Intro. four three two . five__', prompt
   end
-
 end

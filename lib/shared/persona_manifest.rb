@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'csv'
 
 require 'active_model'
@@ -18,10 +19,10 @@ class PersonaManifest
     first = rows[0]
     embeds_path = first['embeds_path']
     prompt_template = first['prompt_template']
-    PersonaManifest.new(embeds_path: embeds_path, prompt_template: prompt_template)
+    PersonaManifest.new(embeds_path:, prompt_template:)
   end
 
-  def to_csv_s()
+  def to_csv_s
     CSV.generate do |csv|
       csv << %w[embeds_path prompt_template]
       # Escape newlines
@@ -29,5 +30,4 @@ class PersonaManifest
       csv << [embeds_path, escaped_template]
     end
   end
-
 end

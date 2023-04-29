@@ -50,7 +50,7 @@ class OpenAIMagic
       usage_j['completion_tokens'],
       usage_j['total_tokens']
     )
-    ChatCompletionResponse.new(answer: answer, usage: usage)
+    ChatCompletionResponse.new(answer:, usage:)
   end
 
   def get_embedding(str)
@@ -74,8 +74,8 @@ class OpenAIMagic
     )
 
     EmbeddingResponse.new(
-      embedding: embedding,
-      usage: usage
+      embedding:,
+      usage:
     )
   end
 end

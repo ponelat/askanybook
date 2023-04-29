@@ -29,5 +29,4 @@ class Persona
     question = question_embed.content
     Persona.fill_template @template, context, question
   end
-
 end

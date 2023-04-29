@@ -118,5 +118,4 @@ class EmbedsTest < ActiveSupport::TestCase
     truncated_context = 'a juicy apple a rotten banana' # Aprox for 6 tokens
     assert_equal truncated_context, context
   end
-
 end
