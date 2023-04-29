@@ -7,6 +7,22 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
+
+namespace :docker do
+  desc 'Build and run docker image'
+  task build: :environment do
+    sh "docker build -t #{ ENV["DOCKER_IMAGE"] } ."
+  end
+
+  task run: :environment do
+    # Note: be sure to add -i (input) and -t (tty) else the docker container won't die after ctrl-c.
+    sh "docker run --env-file=.env --rm -it -p 3000:3000 #{ ENV["DOCKER_IMAGE"] } "
+  end
+end
+
+
+task docker: 'docker:build'
+
 namespace :frontend do
   desc 'Build frontend and copy to public folder'
   task build: :environment do
