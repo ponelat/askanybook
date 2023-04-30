@@ -5,9 +5,10 @@ require 'dotenv/load'
 require 'optparse'
 require 'csv'
 require 'pdf-reader'
-require_relative '../lib/shared/openai_magic'
-require_relative '../lib/shared/embeds'
-require_relative '../lib/shared/persona_manifest'
+require_relative '../app/services/openai_magic'
+require_relative '../app/models/embeds'
+require_relative '../app/models/embed'
+require_relative '../app/models/persona_manifest'
 
 DEFAULT_PROMPT_TEMPLATE = "
 You are not an assistant, you are a book that aims to answer specific questions about its contents.
@@ -25,7 +26,7 @@ opts_parser = OptionParser.new do |opts|
   opts.separator "\tOPENAI_API_KEY (required). As ENV variable or entry in .env"
   opts.separator ' '
   opts.on('-f', '--file FILENAME', 'Specify input CSV file [id,content] (required)')
-  opts.on('-o', '--output FILENAME', "Specify output CSV file [id,content,0...#{OpenAIMagic::EMBEDDINGS_DIMENSIONS}]")
+  opts.on('-o', '--output FILENAME', "Specify output CSV file [id,content,0...#{OpenaiMagic::EMBEDDINGS_DIMENSIONS}]")
   opts.on('-v', '--verbose', 'Dump debugging info')
 end
 opts_parser.parse!(into: options)
@@ -44,7 +45,7 @@ logger = Logger.new(STDOUT)
 logger.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
 
 # OpenAI client
-ai_magic = OpenAIMagic.new(options[:openai_key])
+ai_magic = OpenaiMagic.new(options[:openai_key])
 
 # Read in PDF to list of pages.
 reader = PDF::Reader.new(options[:file])
@@ -53,7 +54,7 @@ reader = PDF::Reader.new(options[:file])
 list_of_embeddings = []
 reader.pages.each do |page|
   id = "page-#{page.number}"
-  content = OpenAIMagic.sanitize_text(page.text)
+  content = OpenaiMagic.sanitize_text(page.text)
   logger.debug("Santizing page: #{page.text[0, 30]}")
 
   logger.debug('Fetching embedding...')

@@ -5,7 +5,7 @@ require 'openai'
 
 # Docs for embeddings: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 
-class OpenAIMagic
+class OpenaiMagic
   ChatCompletionResponse = Struct.new(:answer, :usage, keyword_init: true)
   EmbeddingResponse = Struct.new(:embedding, :usage, keyword_init: true)
   Usage = Struct.new(:prompt_tokens, :completion_tokens, :total_tokens)
@@ -35,7 +35,7 @@ class OpenAIMagic
 
   def get_completion(str)
     # TODO: Add response error handling
-    str = OpenAIMagic.sanitize_text(str)
+    str = OpenaiMagic.sanitize_text(str)
     response = @client.chat(
       parameters: {
         model: 'gpt-3.5-turbo', # Required.
@@ -56,7 +56,7 @@ class OpenAIMagic
   def get_embedding(str)
     # TODO: Account for max tokens (i.e., EMBEDDINGS_MAX_TOKENS)
     # TODO: Add response error handling
-    str = OpenAIMagic.sanitize_text(str)
+    str = OpenaiMagic.sanitize_text(str)
     response = @client.embeddings(
       parameters: {
         model: 'text-embedding-ada-002',

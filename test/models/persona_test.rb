@@ -3,9 +3,6 @@
 require 'test_helper'
 
 class PersonaTest < ActiveSupport::TestCase
-  require 'shared/persona'
-  require 'shared/embeds'
-  require 'shared/embed'
 
   one = Embeds.normalize_vector([1, 1])
   two = Embeds.normalize_vector([1, 2])

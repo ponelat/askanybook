@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class TokenizerTest < ActiveSupport::TestCase
-  require 'shared/tokenizer'
 
   test '.split_into_tokens should return list of tokens' do
     str = 'this is very naive'

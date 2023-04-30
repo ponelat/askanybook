@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative './embed'
-require_relative './tokenizer'
-
 class Embeds
   def self.from_csv_s(csv_s)
     rows = CSV.parse(csv_s, headers: true)

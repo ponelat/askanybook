@@ -3,7 +3,6 @@
 require 'test_helper'
 
 class PersonaTest < ActiveSupport::TestCase
-  require 'shared/persona_manifest'
 
   test '.from_csv_s should return new instance from string' do
     csv = "embeds_path,prompt_template\n.\/embeds.csv,this is $$context and a $$question"

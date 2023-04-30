@@ -3,8 +3,6 @@
 require 'test_helper'
 
 class EmbedsTest < ActiveSupport::TestCase
-  require 'shared/embeds'
-  require 'shared/embed'
 
   # NOTE: OpenAI already normalizes their embeddings to L2 = 1.
   # For testing arbitrary vectors, you'll need to normalize beforehand.

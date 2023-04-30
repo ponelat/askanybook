@@ -5,10 +5,12 @@ require 'dotenv/load'
 require 'optparse'
 require 'logger'
 require 'csv'
-require_relative '../lib/shared/openai_magic'
-require_relative '../lib/shared/embeds'
-require_relative '../lib/shared/persona'
-require_relative '../lib/shared/persona_manifest'
+require_relative '../app/services/openai_magic'
+require_relative '../app/services/tokenizer'
+require_relative '../app/models/embeds'
+require_relative '../app/models/embed'
+require_relative '../app/models/persona'
+require_relative '../app/models/persona_manifest'
 
 options = {}
 opts_parser = OptionParser.new do |opts|
@@ -37,7 +39,7 @@ logger = Logger.new(STDOUT)
 logger.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
 
 # OpenAI Client
-ai_magic = OpenAIMagic.new(options[:openai_key])
+ai_magic = OpenaiMagic.new(options[:openai_key])
 
 # Get the data
 manifest_csv = File.read(options[:book])
