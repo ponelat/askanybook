@@ -1,16 +1,13 @@
 #!/usr/bin/env ruby
+# Credit for this hack: https://stackoverflow.com/a/41194935/3933724
+exec("/usr/bin/env","rails","runner",$0,*ARGV) unless defined?(Rails)
+
 # frozen_string_literal: true
 
 require 'dotenv/load'
 require 'optparse'
 require 'logger'
 require 'csv'
-require_relative '../app/services/openai_magic'
-require_relative '../app/services/tokenizer'
-require_relative '../app/models/embeds'
-require_relative '../app/models/embed'
-require_relative '../app/models/persona'
-require_relative '../app/models/persona_manifest'
 
 options = {}
 opts_parser = OptionParser.new do |opts|
