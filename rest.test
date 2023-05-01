@@ -1,0 +1,6 @@
+# :server = http://localhost:4000
+
+POST http://localhost:5000/ask
+content-type: application/json
+
+{"question": "What should I do if I already have a well paying job?"}
