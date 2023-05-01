@@ -11,6 +11,8 @@ class Persona
   # TODO: Use proper class types
   attribute :embeds
 
+
+  # TODO: Add DB record for Persona, instead of fetching from CSV
   def initialize(embeds:, template:)
     @embeds = embeds
     @template = template

@@ -3,10 +3,12 @@
 class AskController < ApplicationController
 
   def ask
+    # TODO: Limit question to X characters/tokens. 
     question = params.require(:question)
 
     ai_magic = OpenaiMagic.new(ENV['OPENAI_API_KEY'])
 
+    # TODO: Move fetching from CSV into a service, or into Persona.
     # Create Persona from csv file
     manifest_path  = Rails.root.join('books', 'the-minimalist-entrepeneur.manifest.csv')
     manifest_csv = File.read(manifest_path)
@@ -32,4 +34,6 @@ class AskController < ApplicationController
     render json: { answer: answer_res.answer, tokens: answer_res.usage.total_tokens }
 
   end
+
+
 end
