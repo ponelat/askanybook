@@ -1,48 +1,24 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
+import ErrorPage from './ErrorPage'
+import useHttp from './useHttp'
 
 function App() {
-    const [health, setHealth] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    useEffect(() => {
-        setLoading(true)
-	fetch('/health')
-	    .then(res => res.json())
-	    .then(body => {
-		setHealth(body)
-		setLoading(false)
-	    }, err => {
-                setError(err)
-		setLoading(false)
-            })
-	
-    }, [])
+  const [healthState, checkHealth] = useHttp('/health')
+  const isUnhealthy = healthState.matches('error')
 
-    if(loading) {
-        return (
-	    <div>
-	      'Loading...'
-	    </div>
-        )
-    }
+  useEffect(() => {
+    checkHealth()
+  }, [checkHealth])
 
-    if(error) {
-        return (
-            <p className="p-4 fg-red">
-              {error+''}
-            </p>
-        )
-    }
+  if(isUnhealthy) {
+    return <ErrorPage {...healthState.context} unexpected="GET /health came back negative" />
+  }
 
-    return (
-	<div className="p-4 text-green-900">
-          <pre>
-            <code>
-	      Healthy: {JSON.stringify(health, null, 2)}
-            </code>
-          </pre>
-	</div>
-    );
+  return (
+    <div className="p-4 text-gray-800" >
+      Lets go
+    </div>
+  );
 }
 
 export default App;
