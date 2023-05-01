@@ -1,3 +1,4 @@
+import {useCallback} from 'react'
 import { useMachine } from '@xstate/react';
 import { Machine } from 'xstate';
 
@@ -28,7 +29,7 @@ const fetchMachine = Machine({
     loading: {
       invoke: {
 	id: 'fetchData',
-	src: (context, event) => fetch2xx(event.url, event.fetchDetails),
+	src: (context, event) => fetch2xx(event.http.url, event.http),
 	onDone: {
 	  target: 'success',
 	  actions: 'setResult'
@@ -40,11 +41,13 @@ const fetchMachine = Machine({
       }
     },
     success: {
-      type: 'final'
+      on: {
+	FETCH: 'loading'
+      }
     },
     error: {
       on: {
-	RETRY: 'loading'
+	FETCH: 'loading'
       }
     }
   }
@@ -54,6 +57,14 @@ const fetchMachine = Machine({
       context.body = event.data;
     },
     setError: (context, event) => {
+
+      // Also catches parser errors of the JSON
+      if(Error.prototype.isPrototypeOf(event.data)) {
+        context.title = event.data.name 
+        context.detail = event.data.message
+        return
+      }
+
       context.title = event.data.title || 'Error'
       context.detail = event.data.detail || 'Unknown'
       context.instance = event.data.instance || ''
@@ -61,13 +72,26 @@ const fetchMachine = Machine({
   }
 });
 
-const useFetch = (url, fetchDetails) => {
-  const [state, send] = useMachine(fetchMachine);
-  const fetchData = () => {
-    send({ type: 'FETCH', url, fetchDetails });
-  };
+const useHttp = (httpLike) => {
+  const [state, send, service] = useMachine(fetchMachine);
+  const fetchData = useCallback(async (...args) => {
+    let httpLikeObj 
+    if(typeof httpLike === 'string') {
+      httpLikeObj = { url: httpLike }
+    }
 
-  return [state, fetchData];
+    if(typeof httpLike == 'function') {
+      httpLikeObj = await httpLike(...args)
+    }
+
+    if(typeof httpLikeObj !== 'object' || !httpLikeObj) {
+      throw Error('Argument to useHttp does not resolve to an object')
+    }
+
+    send({ type: 'FETCH', http: httpLikeObj });
+  }, [httpLike, send])
+
+  return [state, fetchData, service];
 };
 
-export default useFetch;
+export default useHttp;
