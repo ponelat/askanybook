@@ -17,6 +17,10 @@ namespace :docker do
     # NOTE: be sure to add -i (input) and -t (tty) else the docker container won't die after ctrl-c.
     sh "docker run --env-file=.env --rm -it -p 3000:3000 #{ENV['DOCKER_IMAGE']} "
   end
+
+  task push: :environment do
+    sh "docker push #{ENV['DOCKER_IMAGE']}"
+  end
 end
 
 task docker: 'docker:build'
