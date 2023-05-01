@@ -1,0 +1,18 @@
+<emacs>
+  <command title="Test" dir="." >
+
+    <cmd>
+      nix-shell --run "rails test"
+    </cmd>
+
+  </command>
+
+  <command title="Test:Watch" dir="." >
+
+    <cmd>
+      nix-shell --run "fd | entr rails test"
+    </cmd>
+
+  </command>
+
+</emacs>
