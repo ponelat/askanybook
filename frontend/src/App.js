@@ -38,11 +38,12 @@ function App() {
     return <ErrorPage {...healthState.context} unexpected="GET /health came back negative" />
   }
 
+  // TODO: Move into storybook, so we can test each state without stubbing the controller manually
   return (
     <div className="p-4 container mx-auto text-gray-700 max-w-[700px]" >
 
       <div className="" >
-	<img className="mx-auto w-[200px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
+	<img className="border shadow-lg mx-auto w-[200px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
 	<h2 className="text-gray-600 text-2xl font-bold text-center" >Ask me</h2>
       </div>
 
@@ -66,7 +67,9 @@ function App() {
 	<div className="py-3 px-4" >
 
 	  {questionState.matches('loading') ? (
-	    <span>Loading...</span>
+            <span>
+	      <b>Answer:</b> Loading...
+            </span>
 	  ) : null}
 
 	  {questionState.matches('error') ? (
