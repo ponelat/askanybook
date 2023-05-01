@@ -2,6 +2,7 @@ import {useCallback, useEffect, useRef} from 'react'
 import ErrorPage from './ErrorPage'
 import useHttp from './useHttp'
 import QuestionInput from './QuestionInput'
+import Link from './Link'
 
 function App() {
   const inputRef = useRef(null)
@@ -38,23 +39,51 @@ function App() {
   }
 
   return (
-    <div className="p-4 text-gray-800 bg-gray-50 dark:bg-gray-700" >
-      <QuestionInput ref={inputRef} onAsk={askQuestion}/>
-      <div className="py-3 px-4" >
+    <div className="p-4 container mx-auto text-gray-700 max-w-[700px]" >
 
-	{questionState.matches('loading') ? (
-          <span>Loading...</span>
-	) : null}
+      <div className="" >
+	<img className="mx-auto w-[200px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
+	<h2 className="text-gray-600 text-2xl font-bold text-center" >Ask me</h2>
+      </div>
 
-	{questionState.matches('error') ? (
-          <ErrorPage {...questionState.context} />
-	) : null}
+      <p className="text-center mt-6" >
+        This is a reproduction of the experiment hosted at
+        <Link target="_blank" href="https://askmybook.com"> https://askmybook.com </Link>
+        <br/>
+        TODO: Add Josh magic
+      </p>
 
-	{questionState.matches('success') ? (
-          <div>
-            <b>Answer:</b> {questionState.context.body.answer}
-          </div>
-	) : null}
+      <div className="mt-8" >
+
+	<p className="text-left pl-4" >
+	  Ask the book a question, and it will answer it...
+	</p>
+
+        <div className="mt-2" >
+	  <QuestionInput ref={inputRef} onAsk={askQuestion}/>
+        </div>
+
+	<div className="py-3 px-4" >
+
+	  {questionState.matches('loading') ? (
+	    <span>Loading...</span>
+	  ) : null}
+
+	  {questionState.matches('error') ? (
+	    <ErrorPage {...questionState.context} />
+	  ) : null}
+
+	  {questionState.matches('success') ? (
+	    <div>
+	      <b>Answer:</b> {questionState.context.body.answer}
+	    </div>
+	  ) : null}
+	</div>
+
+      </div>
+
+      <div className="mt-8 text-center" >
+	Project by <Link href="https://www.ponelat.com"> Josh Ponelat  </Link>
       </div>
     </div>
   );
