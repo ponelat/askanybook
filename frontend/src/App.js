@@ -39,6 +39,7 @@ function App() {
   }
 
   // TODO: Move into storybook, so we can test each state without stubbing the controller manually
+  // TODO: Add responsive size to img.
   return (
     <div className="p-4 container mx-auto text-gray-700 max-w-[700px]" >
 
@@ -77,8 +78,13 @@ function App() {
 	  ) : null}
 
 	  {questionState.matches('success') ? (
-	    <div>
-	      <b>Answer:</b> {questionState.context.body.answer}
+            <div>
+              <div>
+		<b>Asked:</b> {questionState.context.body.asked_count || '?'}
+	      </div>
+	      <div>
+		<b>Answer:</b> {questionState.context.body.answer}
+	      </div>
 	    </div>
 	  ) : null}
 	</div>

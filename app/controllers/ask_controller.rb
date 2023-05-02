@@ -1,39 +1,57 @@
 # frozen_string_literal: true
 
 class AskController < ApplicationController
+  MAX_QUESTION_LENGTH_CHARS = 700
 
   def ask
     # TODO: Limit question to X characters/tokens. 
-    question = params.require(:question)
+    question_param = params.require(:question)
+    question_s = OpenaiMagic.sanitize_text(question_param)
 
     ai_magic = OpenaiMagic.new(ENV['OPENAI_API_KEY'])
+    question = Question.find_by(question: question_s)
 
-    # TODO: Move fetching from CSV into a service, or into Persona.
-    # Create Persona from csv file
-    manifest_path  = Rails.root.join('books', 'the-minimalist-entrepeneur.manifest.csv')
-    manifest_csv = File.read(manifest_path)
-    manifest = PersonaManifest.from_csv_s(manifest_csv)
-    embeds_abs_path = Rails.root.join('books', manifest.embeds_path)
-    embeds_csv = File.read(embeds_abs_path)
-    embeds = Embeds.from_csv_s(embeds_csv)
-    persona = Persona.new(embeds: embeds, template: manifest.prompt_template)
+    if question.nil?
+      
+      if question_s.length >= MAX_QUESTION_LENGTH_CHARS
+        raise ProblemJson.new(status: 400, title: 'Bad Request', detail: "Question is over the maximum length of #{MAX_QUESTION_LENGTH_CHARS}")
+      end
 
-    # Build up the prompt
-    embedding_res = ai_magic.get_embedding(question + '?') ## Note: does double `?` make a difference?
-    question_embed = Embed.new(
-      id: '',
-      content: question,
-      tokens: embedding_res.usage.prompt_tokens,
-      embedding: embedding_res.embedding
-    )
-    prompt = persona.build_prompt(question_embed, 800)
+      sahil = PersonaFromCsv.call('the-minimalist-entrepeneur')
 
-    # Ask AI
-    answer_res = ai_magic.get_completion(prompt)
+      # Build up the prompt
+      embedding_res = ai_magic.get_embedding(question_s + '?') ## Note: does double `?` make a difference?
+      question_embed = Embed.new(
+        id: '',
+        content: question_s,
+        tokens: embedding_res.usage.prompt_tokens,
+        embedding: embedding_res.embedding
+      )
 
-    render json: { answer: answer_res.answer, tokens: answer_res.usage.total_tokens }
+      # The secrete sauce
+      prompt = sahil.build_prompt(question_embed, 800)
+
+      # Ask AI
+      answer_res = ai_magic.get_completion(prompt)
+      answer_s = answer_res.answer
+      prompt_tokens = answer_res.usage.prompt_tokens
+      answer_tokens = answer_res.usage.completion_tokens
+
+      question = Question.create(
+        question: question_s,
+        answer: answer_s,
+        prompt:,
+        prompt_tokens:,
+        answer_tokens:,
+        asked_count: 1 
+      )
+    else
+      question.asked_count += 1
+      question.save
+    end
+
+    render json: {  answer: question.answer, asked_count: question.asked_count }
 
   end
-
 
 end

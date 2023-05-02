@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  question: how are you doing
+  answer: just fine
+  prompt_tokens: 8
+  answer_tokens: 2
+  prompt: ask the question and return a response
+  asked_count: 1
+
+two:
+  question: MyString
+  answer: MyString
+  prompt_tokens: 1
+  answer_tokens: 1
+  prompt: MyText
+  asked_count: 1

@@ -31,6 +31,7 @@ class OpenaiMagic
 
   def get_completion(str)
     # TODO: Add response error handling
+    puts 'OpenAI: Getting completion'
     str = OpenaiMagic.sanitize_text(str)
     response = @client.chat(
       parameters: {
@@ -50,6 +51,7 @@ class OpenaiMagic
   end
 
   def get_embedding(str)
+    puts 'OpenAI: Getting embedding'
     # TODO: Account for max tokens (i.e., EMBEDDINGS_MAX_TOKENS)
     # TODO: Add response error handling 
     str = OpenaiMagic.sanitize_text(str)
