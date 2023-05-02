@@ -3,40 +3,12 @@
 require 'openai'
 # require 'stopwords'
 
-
-## Example Responses
-# {
-#   "error": {
-#     "message": "This model's maximum context length is 8191 tokens, however you requested 8363 tokens (8363 in your prompt; 0 for the completion). Please reduce your prompt; or completion length.",
-#     "type": "invalid_request_error",
-#     "param": null,
-#     "code": null
-#   }
-# }
-class OpenaiMagicError < StandardError
-  attr_reader :status, :type,:message, :param, :code
-
-  def initialize(status, error)
-    @status = status
-    @type = error[:type]
-    @message = error[:message]
-  end
-
-  def to_s
-    "OpenAI API Error #{@type}: {@message}"
-  end
-end
-
-
 # Docs for embeddings: https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
 class OpenaiMagic
 
   ChatCompletionResponse = Struct.new(:answer, :usage, keyword_init: true)
   EmbeddingResponse = Struct.new(:embedding, :usage, keyword_init: true)
   Usage = Struct.new(:prompt_tokens, :completion_tokens, :total_tokens)
-
-  # For text-embedding-ada-002
-  # EMBEDDINGS_MAX_TOKENS = 8191 # Number of tokens accepted as input
 
   # Downcase, remove punctiation and stop words (the,a).
   def self.sanitize_text(text)
@@ -110,5 +82,28 @@ class OpenaiMagic
     )
 
 
+  end
+
+  ## Example Responses
+  # {
+  #   "error": {
+  #     "message": "This model's maximum context length is 8191 tokens, however you requested 8363 tokens (8363 in your prompt; 0 for the completion). Please reduce your prompt; or completion length.",
+  #     "type": "invalid_request_error",
+  #     "param": null,
+  #     "code": null
+  #   }
+  # }
+  class Error < StandardError
+    attr_reader :status, :type,:message, :param, :code
+
+    def initialize(status, error)
+      @status = status
+      @type = error[:type]
+      @message = error[:message]
+    end
+
+    def to_s
+      "OpenAI API Error #{@type}: {@message}"
+    end
   end
 end
