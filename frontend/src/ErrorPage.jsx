@@ -19,9 +19,9 @@ export default function ErrorPage({unexpected, title, status, detail}) {
 	  <h3 className="mt-2" >{unexpected}</h3>
         )}
         <hr className="my-2 border-red-200" />
-        <pre>
+        <code>
           {detail}
-        </pre>
+        </code>
       </div>
     </div>
   )
