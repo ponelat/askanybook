@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+
   rescue_from Exception, with: :render_standard
   rescue_from StandardError, with: :render_standard
   rescue_from OpenaiMagic::Error, with: :render_openai_magic
   rescue_from ActionController::ParameterMissing, with: :render_parameter_missing
+
+  # Basic Authenciation 
+  if Rails.env.production? and ENV['HTTP_BASIC_USERNAME']
+    include ActionController::HttpAuthentication::Basic::ControllerMethods
+    include ActionController::HttpAuthentication::Basic::ControllerMethods
+    http_basic_authenticate_with name: ENV['HTTP_BASIC_USERNAME'], password: ENV['HTTP_BASIC_PASSWORD'] # except: :index
+  end
+
 
   class ProblemJson < StandardError
     attr_reader :status, :title, :detail, :instance
