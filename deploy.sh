@@ -7,7 +7,11 @@ rake docker:build
 rake docker:push
 
 # Push the files up
-scp $DIR/docker-compose.production.yml $DIR/.env ec2-user@askanybook.ponelat.com:/home/ec2-user/
+rsync -r \
+    $DIR/docker-compose.production.yml \
+    $DIR/.env \
+    $DIR/books/  \
+    ec2-user@askanybook.ponelat.com:/home/ec2-user/
 
 # Pull new image and redeploy
 ssh ec2-user@askanybook.ponelat.com "\
