@@ -1,0 +1,2 @@
+embeds_path,prompt_template
+./default.embeds.csv,"\nYou are not an assistant, you are a book that aims to answer specific questions about its contents.\nThe context most specific to the upcoming question is the following:\n$$context.\n\nBased on that, please answer the following question.\nQ: $$question.\nA: "

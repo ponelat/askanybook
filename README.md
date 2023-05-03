@@ -7,7 +7,6 @@ Hosted on https://askanybook.ponelat.com.
 It is protected by HTTP Basic authentication. Please reach out if you'd like access.
 
 
-
 This is a reproduction of the experiment, https://askmybook.com/. But built with Ruby-on-Rails and React.
 
 There are several parts:
@@ -23,8 +22,12 @@ If you want to get started immediately (using docker-compose, easiest):
 
 - Install docker-compose, so that `docker-compose -h` works.
 - Flesh out `.env` file, see [Environment](#environment)
-- Embed a book and move the manifest to `books/default.manifest.csv`
-- Now run with `docker-compose up`. Visit http://localhost:80
+- (optional, requires ruby) Embed a custom book, see [Embedding a book](./#embedding-a-book)
+- Move the silly giraffe book files and put them locally into `books/`
+  - [./books-examples/default.manifest.csv]() -> books/default.manifest.csv
+  - [./books-examples/default.embeds.csv]() -> books/default.embeds.csv
+- Run with `docker-compose up`. 
+- Visit http://localhost:80
 
 If you want to get up with locally, see: [Developing the web app](#developing-the-web-app)
 
@@ -52,12 +55,13 @@ Start by embedding a book then you can ask it questions.
 To get anywhere you'll need to embed a PDF book, which will run each page into AI and create two files, a `{name}.manifest.csv` and `{name}.embeds.csv`. These files can then be used to ask questions using the contents of the book.
 
 ```sh
-Usage: bin/embedbook [options]
+sage: bin/embedbook [options]
 
 	OPENAI_API_KEY (required). As ENV variable or entry in .env
 
     -f, --file FILENAME              Specify input CSV file [id,content] (required)
-    -v, --verbose                    Dump debugging info
+    -n, --name NAME                  Specify the name of the book, else it will be called "default" for use with the web app""
+    -v, --verbose                    Dump debugging info```
 ```
 
 This repo comes with a silly example, [books-examples/giraffe.pdf](books-examples/giraffe.pdf). To embed it..
@@ -68,8 +72,8 @@ bin/embedbook --file books-examples/giraffe.pdf
 ```
 
 You should see it embed two pages and create
-- `books/giraffe.manifest.csv`
-- `books/giraffe.embeds.csv`
+- `books/default.manifest.csv`
+- `books/default.embeds.csv`
 
 The manifest file includes the template, which you should tinker with. The embeds file contains all the embeddings and content. The manifest has a link to the embeds file, which is also configurable.
 
@@ -82,17 +86,19 @@ Usage: askbook --book ./book.manifest.csv --question QUESTION
 
 	OPENAI_API_KEY (required). As ENV variable or entry in .env
 
-    -b, --book FILENAME              Specify persona CSV file [embeds_path,prompt_template] (required)
+    -b, --book FILENAME              Specify persona CSV file [embeds_path,prompt_template] else defaults to books/default.manifest.csv
     -q, --question QUESTION          The question to ask the book (required). Typically wrapped in quotes
     -v, --verbose                    Dump debugging info
-
 ```
 
 Based on our girrafe example, you could run...
 
 ```sh
 # Ask the book a question
-bin/askbook --book books/giraffe.manifest.csv --question "What is this book about?"
+bin/askbook --book books/default.manifest.csv --question "What is this book about?"
+
+# Or you can leave out book to use default
+bin/askbook --question "What is this book about?"
 ```
 
 You should get an answer related to giraffes.
