@@ -15,7 +15,7 @@ opts_parser = OptionParser.new do |opts|
   opts.separator ' '
   opts.separator "\tOPENAI_API_KEY (required). As ENV variable or entry in .env"
   opts.separator ' '
-  opts.on('-b', '--book FILENAME', 'Specify persona CSV file [embeds_path,prompt_template] (required)')
+  opts.on('-b', '--book FILENAME', 'Specify persona CSV file [embeds_path,prompt_template] else defaults to books/default.manifest.csv')
   opts.on('-q', '--question QUESTION', 'The question to ask the book (required). Typically wrapped in quotes')
   opts.on('-v', '--verbose', 'Dump debugging info')
 end
@@ -24,7 +24,6 @@ options[:openai_key] = ENV['OPENAI_API_KEY']
 
 # Check that the required option is present
 begin
-  raise OptionParser::MissingArgument if options[:book].nil?
   raise OptionParser::MissingArgument if options[:question].nil?
   raise OptionParser::MissingArgument if options[:openai_key].nil?
 rescue OptionParser::MissingArgument
@@ -39,10 +38,11 @@ logger.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
 ai_magic = OpenaiMagic.new(options[:openai_key])
 
 # Get the data
-manifest_csv = File.read(options[:book])
+book_path = (options[:book] or File.join(File.dirname(__FILE__), '..', 'books', 'default.manifest.csv'))
+manifest_csv = File.read(book_path)
 manifest = PersonaManifest.from_csv_s(manifest_csv)
 
-embeds_abs_path = File.join(File.dirname(options[:book]), manifest.embeds_path)
+embeds_abs_path = File.join(File.dirname(book_path), manifest.embeds_path)
 logger.debug("Embeds Absolute path: #{embeds_abs_path}")
 embeds_csv = File.read(embeds_abs_path)
 embeds = Embeds.from_csv_s(embeds_csv)

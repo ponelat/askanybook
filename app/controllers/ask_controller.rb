@@ -17,7 +17,7 @@ class AskController < ApplicationController
         raise ProblemJson.new(status: 400, title: 'Bad Request', detail: "Question is over the maximum length of #{MAX_QUESTION_LENGTH_CHARS}")
       end
 
-      sahil = PersonaFromCsv.call('the-minimalist-entrepeneur')
+      sahil = PersonaFromCsv.call('default')
 
       # Build up the prompt
       embedding_res = ai_magic.get_embedding(question_s + '?') ## Note: does double `?` make a difference?
