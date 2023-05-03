@@ -7,22 +7,39 @@ Hosted on https://askanybook.ponelat.com.
 It is protected by HTTP Basic authentication. Please reach out if you'd like access.
 
 
+
 This is a reproduction of the experiment, https://askmybook.com/. But built with Ruby-on-Rails and React.
 
 There are several parts:
-- Script to embed a PDF book. See 
-- Script to ask AI about the book. See
-- Web app to ask AI about the book.
+
+- Script to embed a PDF book. See [Embed a book](#embedding-a-book)
+- Script to ask AI about the book. See [Asking AI about a book](#asking-ai-about-a-book)
+- Web app to ask AI about the book. See: https://askanybook.ponelat.com
+
+
+## Quick start
+
+If you want to get started immediately (using docker-compose, easiest):
+
+- Install docker-compose, so that `docker-compose -h` works.
+- Flesh out `.env` file, see [Environment](#environment)
+- Embed a book and move the manifest to `books/default.manifest.csv`
+- Now run with `docker-compose up`. Visit http://localhost:80
+
+If you want to get up with locally, see: [Developing the web app](#developing-the-web-app)
 
 ## Environment
 
 **Setting up access with .env and API key(s)**
+
 This project depends on OpenAI for fetching embeddings and completions. You will need an API key to use it.
 
 - Copy [.env.template](.env.template) to .env 
 - Fill out, at least, the OpenAI API Key
 
 You can get an API key from https://platform.openai.com/account/api-keys
+
+To fill out the `SECRET_KEY_BASE`, you can locally run `rails secret` and use that output. It is needed for running Rails in production environments. And mounted on the docker container when it is run.
 
 
 ## The scripts
@@ -46,6 +63,7 @@ Usage: bin/embedbook [options]
 This repo comes with a silly example, [books-examples/giraffe.pdf](books-examples/giraffe.pdf). To embed it..
 
 ```sh
+# Embed the example book
 bin/embedbook --file books-examples/giraffe.pdf
 ```
 
@@ -71,7 +89,9 @@ Usage: askbook --book ./book.manifest.csv --question QUESTION
 ```
 
 Based on our girrafe example, you could run...
+
 ```sh
+# Ask the book a question
 bin/askbook --book books/giraffe.manifest.csv --question "What is this book about?"
 ```
 
@@ -92,6 +112,8 @@ You should get an answer related to giraffes.
 - Node.js (18+ reccommended)
 - Docker (optional, for deployments)
 - API keys, see: [Environment](#environment) above.
+	
+
 
 If you're a Nix(OS) geek, see [Set up in Nix](#setup-in-nix) below for instructions.
 
@@ -140,9 +162,16 @@ Currently only parts of the back-end have unit tests. These are aimed at the bus
 > The test suite is not a blocker for either commiting code, or building the docker image. Please ensure tests pass manually before committing. 
 
 
-# Deploying the web app
+# Building and deploying the locall
+
 
 This app was designed to work in docker-compose.
+You can run `docker-compose up` locally. That an `.env` file and a `books/default.{manifest,embeds}.csv` are all you need to start the app up and play with it.
+
+It will be running on http://localhost:80
+
+## Building docker image
+
 First you'll need to build a docker image, you can modify `.env` file to change the name of the docker image. 
 Then run 
 ```sh
@@ -167,3 +196,13 @@ docker login
 ```
 
 The follow the prompts for username and password (or GitHub Token).
+
+# Building and deploying the web app to production
+
+To deploy the app, you can use [./docker-compose.production.yml](./docker-compose.production.yml) and a copy of `.env` file.
+To get the `.env` file, see [Environment](#environment)
+
+You will need to to tweak this compose file, specifically the hostname for TLS/HTTPS.
+
+There is a helper script, [./deploy.sh](./deploy.sh) that build, pushes and redeploys an ec2 instance.
+

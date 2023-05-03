@@ -4,6 +4,10 @@ Dockerfile
 .env
 books/
 
+docker-compose.yml
+docker-compose.production.yml
+deploy.sh
+
 # Ignore bundler config.
 /.bundle
 

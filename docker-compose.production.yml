@@ -9,6 +9,10 @@ services:
     env_file:
       - .env
     restart: always
+    volumes:
+      - 'askanybook_sqlite:/app/db'
+      - './books:/app/books'
+      
     networks:
       - caddy
     labels:
@@ -36,3 +40,4 @@ networks:
 
 volumes:
   caddy_data: {}
+  askanybook_sqlite: {}
