@@ -10,10 +10,15 @@ services:
     restart: always
     ports:
       - 80:3000
+    # PID files cause issue with docker/compose.
+    # Workaround, see: https://ieftimov.com/posts/docker-compose-stray-pids-rails-beyond/
+    environment:
+      PIDFILE: /tmp/pids/server.pid
+    tmpfs:
+      - '/tmp/pids/'
     volumes:
       - './sqlite:/app/sqlite'
       - './books:/app/books'
       
 volumes:
   caddy_data: {}
-  askanybook_sqlite: {}

@@ -8,6 +8,12 @@ services:
     image: ghcr.io/ponelat/askanybook:latest
     env_file:
       - .env
+    # PID files cause issue with docker/compose.
+    # Workaround, see: https://ieftimov.com/posts/docker-compose-stray-pids-rails-beyond/
+    environment:
+      PIDFILE: /tmp/pids/server.pid
+    tmpfs:
+      - '/tmp/pids/'
     restart: always
     volumes:
       - 'askanybook_sqlite:/app/sqlite'
