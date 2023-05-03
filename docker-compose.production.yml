@@ -10,7 +10,7 @@ services:
       - .env
     restart: always
     volumes:
-      - 'askanybook_sqlite:/app/db'
+      - 'askanybook_sqlite:/app/sqlite'
       - './books:/app/books'
       
     networks:

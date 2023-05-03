@@ -11,7 +11,7 @@ services:
     ports:
       - 80:3000
     volumes:
-      - 'askanybook_sqlite:/app/db'
+      - './sqlite:/app/sqlite'
       - './books:/app/books'
       
 volumes:
