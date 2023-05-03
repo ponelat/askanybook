@@ -1,5 +1,6 @@
 .env
-books/
+books/*
+!books/.keep
 
 # Ignore bundler config.
 /.bundle
