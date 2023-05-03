@@ -54,6 +54,7 @@ pkgs.mkShell {
     pkgs.fd
 
     pkgs.nodejs-18_x
+    pkgs.docker
   ];
 
 }

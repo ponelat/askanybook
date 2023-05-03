@@ -4,6 +4,7 @@ exec("/usr/bin/env","rails","runner",$0,*ARGV) unless defined?(Rails)
 
 # frozen_string_literal: true
 
+require 'fileutils'
 require 'dotenv/load'
 require 'optparse'
 require 'csv'
@@ -20,12 +21,11 @@ A: "
 
 options = {}
 opts_parser = OptionParser.new do |opts|
-  opts.banner = 'Usage: csv-to-embeddings [options]'
+  opts.banner = 'Usage: bin/embedbook [options]'
   opts.separator ' '
   opts.separator "\tOPENAI_API_KEY (required). As ENV variable or entry in .env"
   opts.separator ' '
   opts.on('-f', '--file FILENAME', 'Specify input CSV file [id,content] (required)')
-  opts.on('-o', '--output FILENAME', "Specify output CSV file [id,content,0...#{OpenaiMagic::EMBEDDINGS_DIMENSIONS}]")
   opts.on('-v', '--verbose', 'Dump debugging info')
 end
 opts_parser.parse!(into: options)
@@ -74,11 +74,16 @@ end
 
 # Name of book
 name = File.basename(options[:file], '.*')
+books_dir = File.join(File.dirname(__FILE__), '..', 'books')
 logger.debug("Using name: #{name}")
+
+# Ensure books_dir exists
+logger.debug("Ensuring #{books_dir} exists")
+FileUtils.mkdir_p(books_dir)
 
 # Write the {name}.embeddings.csv
 embeds_csv = Embeds.new(list_of_embeddings).to_csv_s
-embeds_path = File.join(File.dirname(__FILE__), '..', 'books', "#{name}.embeds.csv")
+embeds_path = File.join(books_dir, "#{name}.embeds.csv")
 logger.debug("Writing #{embeds_path}")
 File.write(embeds_path, embeds_csv, mode: "wb")
 
@@ -88,7 +93,7 @@ manifest = PersonaManifest.new(
   prompt_template: DEFAULT_PROMPT_TEMPLATE
 )
 
-manifest_path = File.join(File.dirname(__FILE__), '..', 'books', "#{name}.manifest.csv")
+manifest_path = File.join(books_dir, "#{name}.manifest.csv")
 logger.debug("Writing #{manifest_path}")
 File.write(manifest_path, manifest.to_csv_s, mode: "wb")
 
