@@ -3,6 +3,8 @@ import ErrorPage from './ErrorPage'
 import useHttp from './useHttp'
 import QuestionInput from './QuestionInput'
 import Link from './Link'
+import { SiGithub, SiTwitter } from 'react-icons/si';
+
 
 function App() {
   const inputRef = useRef(null)
@@ -45,15 +47,8 @@ function App() {
 
       <div className="" >
 	<img className="border shadow-lg mx-auto w-[200px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
-	<h2 className="text-gray-600 text-2xl font-bold text-center" >Ask me</h2>
+	<h2 className="text-gray-600 mt-4 text-2xl font-bold text-center" ></h2>
       </div>
-
-      <p className="text-center mt-6" >
-        This is a reproduction of the experiment hosted at
-        <Link target="_blank" href="https://askmybook.com"> https://askmybook.com </Link>
-        <br/>
-        TODO: Add Josh magic
-      </p>
 
       <div className="mt-8" >
 
@@ -85,14 +80,45 @@ function App() {
 	      <div>
 		<b>Answer:</b> {questionState.context.body.answer}
 	      </div>
+
 	    </div>
 	  ) : null}
 	</div>
 
       </div>
 
-      <div className="mt-8 text-center" >
-	Project by <Link href="https://www.ponelat.com"> Josh Ponelat  </Link>
+
+      <p className="text-center mt-6 text-gray-400" >
+        This is a reproduction of the experiment hosted at
+        <Link target="_blank" href="https://askmybook.com"> https://askmybook.com </Link>
+
+	<div className="" >
+	  <Link className="flex justify-center aligne-center opacity-70 hover:opacity-100"  href="http://github.com/ponelat/askanybook">
+	    <div>
+	      Source
+	    </div>
+	    <div>
+	      <SiGithub className="w-6 h-6 relative ml-2 top-[-3px] text-gray-900 inline"   />
+	    </div>
+	  </Link>
+	</div>
+      </p>
+
+
+      <div className="mt-3 text-gray-600 flex justify-center" >
+
+	<div className="flex justify-center items-center" >
+	  <div>
+	    Project by <Link href="https://"> Josh Ponelat  </Link>
+	  </div>
+
+	  <Link className="ml-2 opacity-70 hover:opacity-100"  href="https://twitter.com/jponelat">
+	    <SiTwitter className="w-6 h-6 text-[#1DA1F2] opacity-50 hover:opacity-100" />
+	  </Link>
+
+	</div>
+
+	
       </div>
     </div>
   );
