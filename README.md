@@ -1,6 +1,6 @@
 # AskAnyBook
 
-> **Warning:** Any data you provide via the API/web/cli inputs may go through OpenAI, which falls under their Data Policies. See https://openai.com/policies/api-data-usage-policies for more info.
+> **Warning**: Any data you provide via the API/web/cli inputs may go through OpenAI, which falls under their Data Policies. See https://openai.com/policies/api-data-usage-policies for more info.
 
 This project is hosted on https://askanybook.ponelat.com and is protected by HTTP Basic authentication. Please reach out if you'd like access.
 
@@ -23,7 +23,7 @@ bundle install
 npm i --prefix frontend/
 ```
 
-**...Then:* 
+**...Then:** 
 
 - Copy [./env.template](./.env.template) to `.env`
 - Grab an [OpenAI API Key](https://platform.openai.com/account/api-keys) and add it to `.env`
@@ -115,10 +115,10 @@ With that we get the right context to ask the book a question, by sorting the pa
 
 You can embed the example `giraffe.pdf` book, or any PDF that you have permission to do so.
 
-> **Note:** If you leave out `--name`, it will use `default`. This convention is true of the scripts as well as the web app.
+> **Note**: If you leave out `--name`, it will use `default`. This convention is true of the scripts as well as the web app.
 
 
-> **Warning:** Any data you provide via the API/web/cli inputs may go through OpenAI, which falls under their Data Policies. See https://openai.com/policies/api-data-usage-policies for more info.
+> **Warning**: Any data you provide via the API/web/cli inputs may go through OpenAI, which falls under their Data Policies. See https://openai.com/policies/api-data-usage-policies for more info.
 
 
 ### Embedding a book
@@ -174,4 +174,4 @@ bin/askbook --question "What is this book about?"
 
 You should get an answer related to giraffes.
 
-> **Note:** The giraffe example isn't comprehensive of the features of askbook but helps to serve as a smoke test.
+> **Note**: The giraffe example isn't comprehensive of the features of askbook but helps to serve as a smoke test.
