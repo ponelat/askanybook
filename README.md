@@ -10,11 +10,11 @@ This is a reproduction of the experiment, https://askmybook.com/, but built with
 There are several parts:
 
 - Web app to ask AI about the book. See: https://askanybook.ponelat.com
-- Script to embed and ask a PDF book. See [Embedding a book](#embedding-a-book) and [Asking AI about a book](#asking-ai-about-a-book)
+- Scripts to embed and ask a PDF book. See [Embedding a book](#embedding-a-book) and [Asking AI about a book](#asking-ai-about-a-book)
 
 ## Quick start
 
-You'll need Ruby(3.1) and Node.js(18) installed.
+You'll need **Ruby (3.1)** and **Node.js (18)** installed.
 
 ```sh
 # Get the Ruby stuff going
@@ -24,13 +24,14 @@ bundle install
 npm i --prefix frontend/
 ```
 
-**...Then:***
+**...Then:* 
 
-- Copy `.env.template` to `.env`
+- Copy [./env.template](./.env.template) to `.env`
 - Grab an [OpenAI API Key](https://platform.openai.com/account/api-keys) and add it to `.env`
-- Embed a book, for the example book run:
+- Embed a book. You can use the example book:
 
 ```sh
+# Embed a book (adds it to books )
 bin/embedbook -f books-examples/giraffe.pdf
 ```
 
@@ -50,12 +51,13 @@ Now go visit the react server, it will proxy to rails as needed.
 
 For more info on requirements and env variables, see below.
 
-### ~~Quick~~ Slow start
+## ~~Quick~~ Slow start
 
 See [README-DEPLOY.md](./README-DEPLOY.md) for running the app in docker-compose, both locally and on a production server.
+
 See [Set up in Nix](#set-up-in-nix) for using Nix to manage local dependencies like Ruby and Node.js
 
-## Environment
+### Environment
 
 **Setting up access with .env and API key(s)**
 
@@ -68,7 +70,7 @@ This project depends on OpenAI for fetching embeddings and completions. You will
 > To fill out the `SECRET_KEY_BASE`, you can locally run `rails secret` and use that output. It is needed for running Rails in production environments and is mounted on the docker container when it is run.
 
 
-## Requirements
+### Requirements
 
 This is a Ruby on Rails project with a Create-React-App front-end.
 
@@ -84,8 +86,11 @@ The Rails server will also respond to changes in `.rb` files.
 
 ### Set up in Nix
 
-If you have Nix, you can simply run `nix-shell` and you should be good. This has been tested on x86_64.
+If you have Nix, you can simply run `nix-shell` and you should be good.
+This has been tested on x86_64.
+
 To add gems, you will need to run `nix/add-gem.sh <gemname>`, which will add to `Gemfile` and run `bundix` on the `Gemfile.lock`. Then you'll need to enter a new shell with `nix-shell` (from root folder). If you modify `Gemfile` manually, you can run `nix/bundle.sh` to only compile the `Gemfile.lock` to `gemset.nix`.
+
 To add npm packages, you can use npm as you would locally.
 
 ### Testing
@@ -94,13 +99,14 @@ Currently, only parts of the back-end have unit tests. These are aimed at the bu
 
 - `rails test`
 
-> **Note: The test suite is not a blocker for either committing code or building the Docker image. Please ensure tests pass manually before committing.
+> **Note**: The test suite is not a blocker for either committing code or building the Docker image. Please ensure tests pass manually before committing.
 
 
 ## The scripts
 
 
-Embedding is the process of taking a PDF and for each page, it requires of OpenAI a vector of numbers known as `embeddings`. 
+Embedding is the process of taking a PDF and for each page, it requests of OpenAI a vector of numbers known as `embeddings`. 
+
 These `embeddings` can be thought of as coordinates in AI-space. Two similar "ideas" will be close by in this coordinate system.
 As such a question and answer pair will be close together.
 
