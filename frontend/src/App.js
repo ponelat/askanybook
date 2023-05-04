@@ -3,8 +3,9 @@ import ErrorPage from './ErrorPage'
 import useHttp from './useHttp'
 import QuestionInput from './QuestionInput'
 import Link from './Link'
-import { SiGithub, SiTwitter } from 'react-icons/si';
-
+import { SiGithub, SiTwitter } from 'react-icons/si'
+import {BsCalendarDate} from 'react-icons/bs'
+import { Typewriter } from 'react-simple-typewriter'
 
 function App() {
   const inputRef = useRef(null)
@@ -43,11 +44,10 @@ function App() {
   // TODO: Move into storybook, so we can test each state without stubbing the controller manually
   // TODO: Add responsive size to img.
   return (
-    <div className="p-4 container mx-auto text-gray-700 max-w-[700px]" >
+    <div className="p-4 container mx-auto text-gray-600 max-w-[700px]" >
 
       <div className="" >
-	<img className="border shadow-lg mx-auto w-[200px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
-	<h2 className="text-gray-600 mt-4 text-2xl font-bold text-center" ></h2>
+	<img className="border shadow-lg mx-auto w-[170px] md:w-[300px]"  alt="The Minimalist Entrepeneur" src="/the-minimalist-entrepeneur.png"/>
       </div>
 
       <div className="mt-8" >
@@ -78,7 +78,16 @@ function App() {
 		<b>Asked:</b> {questionState.context.body.asked_count || '?'}
 	      </div>
 	      <div>
-		<b>Answer:</b> {questionState.context.body.answer}
+		<b>Answer:</b>
+
+		<Typewriter
+		  words={[questionState.context.body.answer]}
+		  loop={1}
+		  cursor
+		  typeSpeed={30}
+		  deleteSpeed={false}
+		/>
+
 	      </div>
 
 	    </div>
@@ -88,8 +97,10 @@ function App() {
       </div>
 
 
-      <p className="text-center mt-6 text-gray-400" >
-        This is a reproduction of the experiment hosted at
+      <p className="text-center mt-12 text-gray-800" >
+        <span className="" >
+	  This is a reproduction of the experiment hosted at
+        </span>
         <Link target="_blank" href="https://askmybook.com"> https://askmybook.com </Link>
 
 	<div className="" >
@@ -98,7 +109,7 @@ function App() {
 	      Source
 	    </div>
 	    <div>
-	      <SiGithub className="w-6 h-6 relative ml-2 top-[-3px] text-gray-900 inline"   />
+	      <SiGithub className="w-6 h-6 relative ml-2 top-[-3px] text-gray-800 inline"   />
 	    </div>
 	  </Link>
 	</div>
@@ -109,11 +120,15 @@ function App() {
 
 	<div className="flex justify-center items-center" >
 	  <div>
-	    Project by <Link href="https://"> Josh Ponelat  </Link>
+	    Project by <b> Josh Ponelat  </b>
 	  </div>
 
 	  <Link className="ml-2 opacity-70 hover:opacity-100"  href="https://twitter.com/jponelat">
 	    <SiTwitter className="w-6 h-6 text-[#1DA1F2] opacity-50 hover:opacity-100" />
+	  </Link>
+
+	  <Link className="ml-2 opacity-70 hover:opacity-100"  href="https://calendly.com/ponelat/josh">
+	    <BsCalendarDate className="w-6 h-6 relative top-[-1px] text-[#1DA1F2] opacity-50 hover:opacity-100" />
 	  </Link>
 
 	</div>
