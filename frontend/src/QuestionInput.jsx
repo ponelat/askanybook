@@ -10,7 +10,7 @@ export default forwardRef(({ onAsk, isLoading=false }, ref) => {
   const handleKeyPress = useCallback((event) => {
     if(!input)
       return
-    if (event.key === 'Enter' && (event.shiftKey || event.ctrlKey)) {
+    if (event.key === 'Enter' && !(event.shiftKey)) {
       event.preventDefault();
       onSubmit(input)
     }
@@ -51,7 +51,7 @@ export default forwardRef(({ onAsk, isLoading=false }, ref) => {
 	</button>
 
       </div>
-      <div className="text-gray-400 text-sm pt-0.5 text-center">Shift- or Ctrl-Enter to ask</div>
+      <div className="text-gray-400 text-sm pt-0.5 text-center">Shift-Enter for newlines</div>
     </form>
 
   )
