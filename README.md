@@ -103,9 +103,9 @@ Currently, only parts of the back-end have unit tests. These are aimed at the bu
 
 ## The scripts
 
-
 For this project, Embedding refers to extracting vector embeddings, which are numerical "coordinates", from a PDF document. Each page of the PDF is individually processed, and OpenAI is the backend to provide the embeddings.
 These `embeddings` can be thought of as coordinates in AI-space. Two ideas that are conceptually similar will be close-by in this coordinate system.
+
 An example of this is a question and answer pair.
 
 To answer questions of a book, we can gather context by sorting the pages by how close they are to the question (specifically, comparing the question's embeddings with those of the PDF pages). The sorted pages can then be used in a prompt alongside the question. 
@@ -122,7 +122,7 @@ You can embed the example `giraffe.pdf` book, or any PDF that you have permissio
 
 ### Embedding a book
 
-To get anywhere, you'll need to embed a PDF book, which will run each page into AI and create two files: `{name}.manifest.csv` and `{name}.embeds.csv`. These files can then be used to ask questions using the contents of the book.
+To get anywhere, you'll need to embed a PDF book, which will run each page through OpenAI and create two files: `{name}.manifest.csv` and `{name}.embeds.csv`. These files can then be used to ask questions using the contents of the book.
 
 ```sh
 Usage: bin/embedbook [options]
@@ -161,7 +161,7 @@ Usage: askbook --book ./book.manifest.csv --question QUESTION
     -v, --verbose                    Dump debugging info
 ```
 
-Based on our giraffe example, you could run:
+Based on our giraffe example, you can run:
 
 ```sh
 # Ask the book a question
