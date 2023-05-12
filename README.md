@@ -104,12 +104,11 @@ Currently, only parts of the back-end have unit tests. These are aimed at the bu
 ## The scripts
 
 
-Embedding is the process of taking a PDF and for each page, it requests of OpenAI a vector of numbers known as `embeddings`. 
+For this project, Embedding refers to extracting vector embeddings, which are numerical "coordinates", from a PDF document. Each page of the PDF is individually processed, and OpenAI is the backend to provide the embeddings.
+These `embeddings` can be thought of as coordinates in AI-space. Two ideas that are conceptually similar will be close-by in this coordinate system.
+An example of this is a question and answer pair.
 
-These `embeddings` can be thought of as coordinates in AI-space. Two similar "ideas" will be close by in this coordinate system.
-As such a question and answer pair will be close together.
-
-With that we get the right context to ask the book a question, by sorting the pages of the PDF by how close they are to the question and then providing as much of that as we can inside a prompt for AI.
+To answer questions of a book, we can gather context by sorting the pages by how close they are to the question (specifically, comparing the question's embeddings with those of the PDF pages). The sorted pages can then be used in a prompt alongside the question. 
 
 ![AI Coordinate Space Diagram](./images/ai-coordinate-space.png)
 
