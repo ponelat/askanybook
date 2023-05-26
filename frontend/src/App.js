@@ -105,7 +105,7 @@ function App() {
         <Link target="_blank" href="https://askmybook.com"> https://askmybook.com </Link>
 
 	<div className="" >
-	  <Link className="flex justify-center aligne-center opacity-70 hover:opacity-100"  href="https://github.com/ponelat/you-will-never-find-me-mwahaha-secret-project">
+	  <Link className="flex justify-center aligne-center opacity-70 hover:opacity-100"  href="https://github.com/ponelat/askanybook">
 	    <div>
 	      Source
 	    </div>
